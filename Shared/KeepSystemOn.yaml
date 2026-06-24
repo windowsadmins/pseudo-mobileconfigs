@@ -1,0 +1,25 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-power#standbytimeoutpluggedin
+
+displayName: "KeepSystemOn"
+description: "Manage system so it doesn't go to sleep"
+identifier: "com.example.winadmins.KeepSystemOn"
+version: 2025.01.31
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+- name: "Standby Timeout On Battery"
+  dataType: "String (XML file)"
+  omaUri: "./Device/Vendor/MSFT/Policy/Config/Power/StandbyTimeoutOnBattery"
+  value: |-
+    <Enabled/><Data ID="EnterDCStandbyTimeOut" value="0"/>
+
+- name: "Standby Timeout Plugged In"
+  dataType: "String (XML file)"
+  omaUri: "./Device/Vendor/MSFT/Policy/Config/Power/StandbyTimeoutPluggedIn"
+  value: |-
+    <Enabled/><Data ID="EnterACStandbyTimeOut" value="0"/>
+  

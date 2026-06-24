@@ -1,0 +1,23 @@
+# Reference: https://learn.microsoft.com/en-us/graph/api/resources/intune-softwareupdate-windowsfeatureupdateprofile
+#
+# Feature Update pin for Assigned (1:1) staff/faculty endpoints. Immediate
+# rollout — no offer window. Update the `featureUpdateVersion` line when we
+# OK the next Win11 GA; everything else stays put.
+
+displayName: "AssignedWindowsUpdateFeature"
+description: "Current Windows 11 GA feature release pinned for Assigned endpoints. Immediate rollout (no offer window)."
+identifier: "com.example.winadmins.AssignedWindowsUpdateFeature"
+version: 2026.05.16
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+
+windowsUpdate:
+  type: featureUpdateProfile
+  featureUpdateVersion: "Windows 11, version 25H2"
+  installLatestWindows10OnWindows11IneligibleDevice: false
+  installFeatureUpdatesOptional: false
+  # rolloutSettings empty = device gets offered the upgrade as soon as the
+  # profile lands. Assigned-tier staff laptops don't need batched rollout.
+  rolloutSettings: {}

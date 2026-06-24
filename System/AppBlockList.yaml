@@ -1,0 +1,37 @@
+displayName: "AppBlockList"
+identifier: "com.example.winadmins.AppBlockList"
+description: "AppLocker EXE policy that explicitly denies DeepSeek.exe while preserving the standard default-allow rules."
+category: Apps
+version: 2025.05.14
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Block DeepSeek EXE Policy"
+    dataType: "String (XML file)"
+    omaUri: "./Device/Vendor/MSFT/AppLocker/ApplicationLaunchRestrictions/DeepSeekBlock/EXE/Policy"
+    value: |-
+      <RuleCollection Type="Exe" EnforcementMode="Enabled">
+        <!-- Default-allow rules so normal apps keep running -->
+        <FilePathRule Id="{F8E4C8AF-AF52-446B-BCC9-56DBE4A4D4E8}" Name="Allow Windows" UserOrGroupSid="S-1-1-0" Action="Allow">
+          <Conditions>
+            <FilePathCondition Path="%OSDRIVE%\Windows\*" />
+          </Conditions>
+        </FilePathRule>
+        <FilePathRule Id="{B1CFE7A1-095C-4F4F-BFD3-2E07A9A4E2EC}" Name="Allow Program Files" UserOrGroupSid="S-1-1-0" Action="Allow">
+          <Conditions>
+            <FilePathCondition Path="%PROGRAMFILES%\*" />
+            <FilePathCondition Path="%PROGRAMFILES(x86)%\*" />
+          </Conditions>
+        </FilePathRule>
+
+        <!-- Explicit deny for DeepSeek -->
+        <FilePathRule Id="{3F0E2EBA-E9CC-4D4B-9C2C-B04E7EA43753}" Name="Block DeepSeek" UserOrGroupSid="S-1-1-0" Action="Deny">
+          <Conditions>
+            <FilePathCondition Path="*\DeepSeek.exe" />
+          </Conditions>
+        </FilePathRule>
+      </RuleCollection>

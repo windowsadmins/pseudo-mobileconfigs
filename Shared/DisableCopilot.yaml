@@ -1,0 +1,18 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-windowsai#turnoffwindowscopilot
+
+displayName: "DisableCopilot"
+identifier: "com.example.winadmins.DisableWindowsCopilot"
+description: "Disable Windows Copilot on Shared curriculum devices"
+category: System
+version: 2025.03.25
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Disable Windows Copilot"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/WindowsAI/TurnOffWindowsCopilot"
+    value: 1          # 0 = enabled (default), 1 = disabled

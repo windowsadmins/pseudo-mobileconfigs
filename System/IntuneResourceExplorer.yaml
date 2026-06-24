@@ -1,0 +1,18 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-resourceexplorer
+
+displayName: "IntuneResourceExplorer"
+description: "Enables the Intune Specs Inventory feature to collect hardware and software inventory data from the device."
+identifier: "com.example.winadmins.IntuneSpecsInventory"
+version: 2025.02.06
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Enable Intune Specs Inventory"
+    description: "Turn on Intune Specs Inventory"
+    dataType: String
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/ResourceExplorer/Enable"
+    value: "1"

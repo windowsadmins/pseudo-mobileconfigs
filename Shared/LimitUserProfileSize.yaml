@@ -1,0 +1,49 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-admx-userprofiles#limitsize
+
+displayName: "LimitUserProfileSize"
+identifier: "com.example.winadmins.LimitUserProfileSize"
+description: "Enforce a maximum size on each user profile and control behavior when limit is exceeded."
+version: 2025.03.25
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "2004"
+
+omaSettings:
+  - name: "LimitSize"
+    dataType: "String"
+    omaUri: "./User/Vendor/MSFT/Policy/Config/ADMX_UserProfiles/LimitSize?chr"
+    value: |
+      <SyncML xmlns="SYNCML:SYNCML1.2">
+        <SyncBody>
+          <Replace>
+            <CmdID>1</CmdID>
+            <Item>
+              <Target>
+                <LocURI>./User/Vendor/MSFT/Policy/Config/ADMX_UserProfiles/LimitSize?chr</LocURI>
+              </Target>
+              <Data>
+                <!-- Example settings for maximum profile size -->
+                <LimitSize>
+                  <!-- Enable the profile size limit -->
+                  <enabledState>1</enabledState>
+
+                  <!-- Maximum size of the user profile in KB (example: 500,000 KB = ~488 MB) -->
+                  <MaxProfileSize>500000</MaxProfileSize>
+
+                  <!-- Include registry files in the size calculation (1 = true, 0 = false) -->
+                  <IncludeRegistryInProQuota>1</IncludeRegistryInProQuota>
+
+                  <!-- Custom message displayed if the user profile exceeds the limit -->
+                  <ProfileQuotaMessage>Your profile is too large! Please remove unneeded files.</ProfileQuotaMessage>
+
+                  <!-- How often (in minutes) the user sees the message again after dismissing it -->
+                  <UpdateInterval>5</UpdateInterval>
+                </LimitSize>
+              </Data>
+            </Item>
+          </Replace>
+          <Final/>
+        </SyncBody>
+      </SyncML>

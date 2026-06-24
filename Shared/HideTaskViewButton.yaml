@@ -1,0 +1,18 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-start#hidetaskviewbutton
+
+displayName: "HideTaskViewButton"
+identifier: "com.example.winadmins.HideTaskViewButton"
+description: "Disable Task View on Shared curriculum devices"
+category: System
+version: 2025.03.25
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Disable Task View"
+    dataType: "Integer"
+    omaUri: "./User/Vendor/MSFT/Policy/Config/Start/HideTaskViewButton"
+    value: "1"

@@ -1,0 +1,21 @@
+displayName: "OutlookPrefs"
+identifier: "com.example.winadmins.OutlookPrefs"
+description: "Sets Outlook preferences for our environment. Disables the hyperlink warning dialog in Outlook Desktop triggered by FQDN or IP address links introduced after July 2023 security updates (CVE-2023-35311)."
+category: Apps
+version: 2025.05.15
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Disable Outlook Hyperlink Warning"
+    description: "Disables FQDN/IP link security dialog introduced in July 2023"
+    dataType: "Integer"
+    omaUri: "./User/Vendor/MSFT/Policy/Config/Office16~Policy~L_MicrosoftOfficeCommon~L_Security/DisableHyperlinkWarning"
+    value: 1
+  - name: "Add ServiceDesk to Trusted Sites"
+    dataType: "String"
+    omaUri: "./User/Vendor/MSFT/Policy/Config/InternetExplorer/ZoneMapKeyDomains/servicedesk.example.com/https"
+    value: "2"

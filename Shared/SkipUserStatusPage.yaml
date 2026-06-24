@@ -1,0 +1,21 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/dmclient-csp#deviceproviderprovideridFirstSyncStatusSkipUserStatusPage
+# 
+# This profile explicitly skips the User ESP (Account Setup) phase during OOBE.
+# For Self-Deploying (device-driven) Autopilot, User ESP should NOT appear.
+#
+# NOTE: The default value is already 'true' (skip User ESP), so this profile
+# is defensive insurance. If User ESP is appearing, the root cause is likely:
+# 1. ESP profile assignment mismatch with Autopilot profile assignments
+# 2. User-targeted app/policy assignments triggering User ESP
+# 3. TPM attestation failure causing fallback to User-Driven flow
+
+displayName: SkipUserStatusPage
+description: Explicitly skip User ESP (Account Setup) for device-driven Autopilot workflows
+identifier: com.example.winadmins.SkipUserStatusPage
+version: 2025.12.17
+omaSettings:
+  - name: "Skip User Status Page"
+    description: "Skip the MDM user progress page (Account Setup) during OOBE for Entra ID joined devices"
+    dataType: Boolean
+    omaUri: "./Device/Vendor/MSFT/DMClient/Provider/MS DM Server/FirstSyncStatus/SkipUserStatusPage"
+    value: true

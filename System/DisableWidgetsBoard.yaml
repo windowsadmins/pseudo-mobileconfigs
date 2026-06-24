@@ -1,0 +1,17 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-newsandinterests#disablewidgetsboard
+
+displayName: "DisableWidgetsBoard"
+identifier: "com.example.winadmins.DisableWidgetsBoard"
+description: "Disables the Widgets Board feature and removes the taskbar button on Windows devices"
+category: System
+version: 2026.04.12
+platform: "windows10"
+roleScopeTagIds:
+  - 0
+
+settingsCatalog:
+  # Disables the Widgets Board entirely and removes the taskbar button
+  # _0 = Enabled (disable widgets), _1 = Disabled (allow widgets)
+  - definitionId: "device_vendor_msft_policy_config_newsandinterests_disablewidgetsboard"
+    kind: "choice"
+    value: "device_vendor_msft_policy_config_newsandinterests_disablewidgetsboard_0"

@@ -1,0 +1,16 @@
+displayName: "EnableHighDynamicRange"
+description: "Enables HDR Display for compatible Windows 11 devices."
+identifier: "com.example.winadmins.EnableHDRDisplay"
+version: "2025.02.14"
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Enable HDR Display"
+    description: "Enables HDR Display for compatible devices."
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Display/HDRDisplayEnabled"
+    value: "true"

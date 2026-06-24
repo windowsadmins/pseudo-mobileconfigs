@@ -1,0 +1,26 @@
+displayName: "WiFiRoamingAggressiveness"
+description: "Sets Wi-Fi roaming aggressiveness to medium-low to reduce frequent network switching."
+identifier: "com.example.winadmins.WiFiRoamingMediumLow"
+version: "2025.04.03"
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Set Wi-Fi Roaming Aggressiveness to Medium-Low"
+    description: "Reduces frequent Wi-Fi network switching by setting roaming aggressiveness to medium-low."
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Custom/WiFiRoamingAggressiveness"
+    value: "<MediumLow/>"
+  - name: "Set Wi-Fi Preferred Band to 5GHZ"
+    description: "Set Wi-Fi Preferred Band to 5GHZ"
+    dataType: "Integer"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Wifi/PreferredBand"
+    value: "2"
+  - name: "Prioritize Latest Wi-Fi Standard"
+    description: "Optimize for 802.11ax (Wi-Fi 6) or 802.11ac (Wi-Fi 5) if supported"
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Custom/WiFiPreferredStandard"
+    value: "<802.11ax_or_802.11ac/>"

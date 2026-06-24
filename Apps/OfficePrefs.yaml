@@ -1,0 +1,24 @@
+displayName: "OfficePrefs"
+identifier: "com.example.winadmins.OfficePrefs"
+description: "Adds required Entra domains to the Local Intranet zone."
+category: Apps
+version: 2025.05.12
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "SiteToZoneAssignmentList"
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/InternetExplorer/AllowSiteToZoneAssignmentList"
+    value: |-
+      <enabled/>
+      <data id="SiteToZoneAssignmentList" value="
+        https://autologon.microsoftazuread-sso.com,1|
+        https://aadg.windows.net.nsatc.net,1|
+        https://device.login.microsoftonline.com,1|
+        https://enterpriseregistration.windows.net,1|
+        https://login.microsoftonline.com,1"/>
+ 

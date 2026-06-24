@@ -1,0 +1,32 @@
+# Reference: https://mozilla.github.io/policy-templates/
+
+displayName: "AssignedFirefoxPrefs"
+description: "Sets preferences for Firefox to improve security and privacy."
+identifier: "com.example.winadmins.AssignedFirefoxPrefs"
+version: 2025.04.03
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Firefox Safe Browsing Protection Level"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Firefox~Policy~firefox~SafeBrowsing/SafeBrowsingProtectionLevel"
+    value: 2                 # 0-Off, 1-Standard, 2-Strict
+
+  - name: "Firefox Secure Connection"
+    dataType: Boolean
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Firefox~Policy~firefox~Security/SecureConnectionsEnabled"
+    value: true
+
+  - name: "Firefox Do Not Track"
+    dataType: Boolean
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Firefox~Policy~firefox~Privacy/DoNotTrackEnabled"
+    value: true
+
+  - name: "Firefox AutoUpdate"
+    dataType: Boolean
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Firefox~Policy~firefox~Security/AppAutoupdateenabled"
+    value: true

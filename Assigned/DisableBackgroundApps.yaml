@@ -1,0 +1,16 @@
+displayName: "DisableBackgroundApps"
+description: "Disables unnecessary background apps to improve system performance."
+identifier: "com.example.winadmins.DisableBackgroundApps"
+version: "2025.02.14"
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Disable Background Apps"
+    description: "Disables unnecessary background apps to improve system performance."
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/BackgroundApps/AllowBackgroundApps"
+    value: "<Disabled/>"

@@ -1,0 +1,51 @@
+# BootstrapMate CSP Configuration
+# Ingests the BootstrapMate ADMX into Intune, then sets ManifestUrl via policy.
+# This eliminates the need for --url flag when running installapplications.exe.
+#
+# Registry target: HKLM\SOFTWARE\Policies\BootstrapMate
+# Reference: provisioning/bootstrap/resources/BootstrapMate.admx
+
+displayName: "BootstrapMatePrefs"
+identifier: "com.example.winadmins.BootstrapMatePrefs"
+description: "Ingests BootstrapMate ADMX and configures ManifestUrl CSP so installapplications reads the bootstrap URL from policy."
+category: Apps
+version: "2026.03.09"
+applicability:
+  osEditions:
+    - "Windows 10 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  # ── Step 1: Ingest the BootstrapMate ADMX policy template ──
+  - name: "BootstrapMate ADMX Ingestion"
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Policy/ConfigOperations/ADMXInstall/BootstrapMate/Policy/BootstrapMateAdmx"
+    value: |-
+      <policyDefinitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" revision="1.0" schemaVersion="1.0" xmlns="http://schemas.microsoft.com/GroupPolicy/2006/07/PolicyDefinitions">
+        <policyNamespaces>
+          <target prefix="BootstrapMate" namespace="BootstrapMate.Policies" />
+          <using prefix="windows" namespace="Microsoft.Policies.Windows" />
+        </policyNamespaces>
+        <resources minRequiredRevision="1.0" />
+        <categories>
+          <category name="BootstrapMate" displayName="$(string.Cat_BootstrapMate)" />
+          <category name="Connection" displayName="$(string.Cat_Connection)">
+            <parentCategory ref="BootstrapMate" />
+          </category>
+        </categories>
+        <policies>
+          <policy name="ManifestUrl" class="Machine" displayName="$(string.ManifestUrl)" explainText="$(string.ManifestUrl_Help)" key="SOFTWARE\Policies\BootstrapMate" presentation="$(presentation.ManifestUrl)">
+            <parentCategory ref="Connection" />
+            <supportedOn ref="windows:SUPPORTED_Windows_10_0" />
+            <elements>
+              <text id="ManifestUrl_Value" valueName="ManifestUrl" required="true" />
+            </elements>
+          </policy>
+        </policies>
+      </policyDefinitions>
+
+  # ── Step 2: Set the ManifestUrl value ──
+  - name: "BootstrapMate Manifest URL"
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/BootstrapMate~Policy~BootstrapMate~Connection/ManifestUrl"
+    value: "<enabled/><data id=\"ManifestUrl_Value\" value=\"https://cimian.example.com/bootstrap/management.json\"/>"

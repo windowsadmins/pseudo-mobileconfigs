@@ -1,0 +1,110 @@
+# OneDrive Settings Catalog Profile for Assigned (Personal) Devices
+# Uses correct Settings Catalog definition IDs with proper choice/children structure
+
+displayName: AssignedOneDrivePrefs
+identifier: com.example.winadmins.AssignedOneDrivePrefs
+version: 2025.09.06
+description: Configures OneDrive Known Folder Move for automatic redirection of Desktop and Documents folders to OneDrive for Business.
+platform: "windows10"
+roleScopeTagIds:
+  - 0
+
+# Deployment Notes:
+# 1. Tenant ID: 00000000-0000-0000-0000-000000000000 (Example Organization)
+# 2. Known Folder Move: Desktop + Documents (Pictures excluded to manage storage)
+# 3. Files On-Demand enabled to save local storage
+# 4. Personal OneDrive accounts blocked for institutional compliance
+
+settingsCatalog:
+  # ============================================
+  # DEVICE-SCOPE SETTINGS (Computer Configuration)
+  # ============================================
+  
+  # Enable Silent Account Configuration for automatic OneDrive sign-in
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_silentaccountconfig"
+    kind: "choice"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_silentaccountconfig_1"
+    
+  # Enable Files On-Demand (saves local storage)
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_filesondemandenabled"
+    kind: "choice"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_filesondemandenabled_1"
+
+  # Convert synced team sites to online-only (dehydrate)
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_dehydratesyncedteamsites"
+    kind: "choice"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_dehydratesyncedteamsites_1"
+
+  # Block users from opting out of Known Folder Move
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_kfmblockoptout"
+    kind: "choice"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_kfmblockoptout_1"
+
+  # Block external sync - only allow Example Organization tenant
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_blockexternalsync"
+    kind: "choice"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_blockexternalsync_1"
+
+  # Enable forced local mass delete detection (safety - warn before bulk deletes)
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_forcedlocalmassdeletedetection"
+    kind: "choice"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_forcedlocalmassdeletedetection_1"
+
+  # Known Folder Move - Silent auto-configuration with tenant ID
+  # This is a choice with child settings (both textbox for tenant ID AND dropdown are required)
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_kfmoptinnowizard"
+    kind: "choiceWithChildren"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_kfmoptinnowizard_1"
+    children:
+      # Tenant ID for Known Folder Move (required)
+      - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_kfmoptinnowizard_kfmoptinnowizard_textbox"
+        kind: "simple"
+        valueType: "string"
+        value: "00000000-0000-0000-0000-000000000000"
+      # Show KFM wizard notification (required): 0=No, 1=Yes
+      - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_kfmoptinnowizard_kfmoptinnowizard_dropdown"
+        kind: "choice"
+        value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_kfmoptinnowizard_kfmoptinnowizard_dropdown_0"
+
+  # Automatic upload bandwidth percentage (use 70% of available bandwidth)
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_automaticuploadbandwidthpercentage"
+    kind: "choiceWithChildren"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_automaticuploadbandwidthpercentage_1"
+    children:
+      - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_automaticuploadbandwidthpercentage_bandwidthspinbox"
+        kind: "simple"
+        valueType: "integer"
+        value: 70
+
+  # Allow only Example Organization tenant - choice with collection child
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_allowtenantlist"
+    kind: "choiceWithChildren"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_allowtenantlist_1"
+    children:
+      - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_allowtenantlist_allowtenantlistbox"
+        kind: "collection"
+        value:
+          - "00000000-0000-0000-0000-000000000000"
+
+  # ============================================
+  # USER-SCOPE SETTINGS (User Configuration)
+  # ============================================
+  
+  # Disable personal OneDrive accounts (business only)
+  - definitionId: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_disablepersonalsync"
+    kind: "choice"
+    value: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_disablepersonalsync_1"
+
+  # Disable tutorial/first-run experience (enterprise deployment)
+  - definitionId: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_disablefretutorial"
+    kind: "choice"
+    value: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_disablefretutorial_1"
+
+  # Enable all Office apps co-authoring
+  - definitionId: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_enableallocsiclients"
+    kind: "choice"
+    value: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_enableallocsiclients_1"
+
+  # NOTE: Bandwidth limits not configured = unlimited
+  # To set limits, use values 1-100000 (KB/s)
+

@@ -1,0 +1,23 @@
+# Reference: https://learn.microsoft.com/en-us/entra/identity/devices/enterprise-state-roaming-windows-settings-reference
+
+displayName: "EnableEnterpriseStateRoaming"
+identifier: "com.example.winadmins.EnableEnterpriseStateRoaming"
+description: "Enables Enterprise State Roaming on Entra-joined Windows devices."
+category: System
+version: 2025.05.13
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Allow Sync My Settings"
+    dataType: "Integer"
+    omaUri: "./User/Vendor/MSFT/Policy/Config/Experience/AllowSyncMySettings"
+    value: "1"
+
+  - name: "Allow Microsoft Account Connection"
+    dataType: "Integer"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Accounts/AllowMicrosoftAccountConnection"
+    value: "1"

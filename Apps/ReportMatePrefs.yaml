@@ -1,0 +1,20 @@
+displayName: ReportMatePrefs
+identifier: com.example.winadmins.ReportMatePrefs
+description: >
+  Configures ReportMate Windows client via CSP/MDM (HKLM\SOFTWARE\Config\ReportMate):
+  API endpoint, timeouts, logging, retry policy, and osquery path.
+category: Management
+version: 2025.08.18
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+omaSettings:
+  - name: "ReportMate ApiUrl"
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Registry/HKLM/SOFTWARE/Config/ReportMate/ApiUrl"
+    value: "https://reportmate-api.example.com"
+  - name: "ReportMate Client Passphrase"
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Registry/HKLM/SOFTWARE/Config/ReportMate/Passphrase"
+    value: "REPLACE_WITH_YOUR_REPORTMATE_PASSPHRASE"

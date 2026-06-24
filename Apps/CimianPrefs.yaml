@@ -1,0 +1,20 @@
+displayName: "CimianPrefs"
+identifier: "com.example.winadmins.CimianPrefs"
+description: "Sets Cimian fallback CSP OMA-URI values for SoftwareRepoURL and ClientIdentifier."
+category: Cimian
+version: "2025.08.18"
+applicability:
+  osEditions:
+    - "Windows 10 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Cimian Software Repository URL"
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Software/Cimian/Config/SoftwareRepoURL"
+    value: "https://cimian.example.com/deployment"
+
+  - name: "Cimian Client Identifier"
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Software/Cimian/Config/ClientIdentifier"
+    value: "EnrollClient"

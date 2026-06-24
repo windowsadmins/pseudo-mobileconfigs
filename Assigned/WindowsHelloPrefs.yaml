@@ -1,0 +1,56 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/passportforwork-csp
+# Windows Hello for Business Settings Catalog Profile
+# Includes biometrics (standalone) and tenant-scoped policies (grouped)
+
+displayName: "WindowsHelloPrefs"
+description: "Windows Hello for Business - Enable with PIN Recovery"
+identifier: "com.example.winadmins.WindowsHelloPrefs"
+version: "2025.02.12"
+platform: "windows10"
+roleScopeTagIds:
+  - 0
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+settingsCatalog:
+  # =====================================================
+  # STANDALONE SETTING (no parent dependency)
+  # =====================================================
+  
+  # Allow Use of Biometrics
+  # Enables biometric authentication (face and fingerprint) as alternatives to PIN
+  - definitionId: "device_vendor_msft_passportforwork_biometrics_usebiometrics"
+    kind: "choice"
+    value: "device_vendor_msft_passportforwork_biometrics_usebiometrics_true"
+
+  # =====================================================
+  # GROUPED SETTINGS (parent with children)
+  # These settings require the {tenantid} parent container
+  # =====================================================
+  
+  # Parent: Tenant-scoped Windows Hello settings
+  # Children: UsePassportForWork, EnablePinRecovery, MinimumPINLength
+  - definitionId: "device_vendor_msft_passportforwork_{tenantid}"
+    kind: "groupCollection"
+    children:
+      # Use Windows Hello for Business
+      # Enables Windows Hello for Business authentication
+      - definitionId: "device_vendor_msft_passportforwork_{tenantid}_policies_usepassportforwork"
+        kind: "choice"
+        value: "device_vendor_msft_passportforwork_{tenantid}_policies_usepassportforwork_true"
+      
+      # Enable PIN Recovery
+      # Allows users to reset forgotten PINs using Microsoft account or Azure AD
+      - definitionId: "device_vendor_msft_passportforwork_{tenantid}_policies_enablepinrecovery"
+        kind: "choice"
+        value: "device_vendor_msft_passportforwork_{tenantid}_policies_enablepinrecovery_true"
+      
+      # Minimum PIN Length
+      # Sets minimum PIN complexity (8 characters)
+      - definitionId: "device_vendor_msft_passportforwork_{tenantid}_policies_pincomplexity_minimumpinlength"
+        kind: "simple"
+        valueType: "integer"
+        value: 8

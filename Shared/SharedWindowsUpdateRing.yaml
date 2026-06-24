@@ -1,0 +1,47 @@
+# Reference: https://learn.microsoft.com/en-us/graph/api/resources/intune-deviceconfig-windowsupdateforbusinessconfiguration
+#
+# Windows Update for Business ring for Shared (multi-user) endpoints — labs,
+# kiosks, render nodes. Installs nightly with reboot enforced and all WU
+# notifications suppressed so no popups appear at the login screen. No
+# hotpatch on this tier — these devices reboot every day anyway.
+#
+# Servers are carved out: Devices-Shared-Provisioning-Servers gets the
+# manual-only SharedServersWindowsUpdateRing instead, and must be excluded
+# here or the two rings conflict on those devices.
+
+displayName: "SharedWindowsUpdateRing"
+description: "Windows Update for Business ring for Shared (multi-user) endpoints. Installs daily 04:00, notifications suppressed."
+identifier: "com.example.winadmins.SharedWindowsUpdateRing"
+version: 2026.06.12
+
+assignmentExcludeGroups:
+  - "Devices-Shared-Provisioning-Servers"
+  # A3035 staff desktops include Shared\Curriculum\Animation.yaml for lab
+  # software; they take AssignedWindowsUpdateRing, not this one
+  - "Devices-Assigned-Staff-Animation-A3035"
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "22H2"
+
+windowsUpdate:
+  type: updateRing
+  automaticUpdateMode: autoInstallAndRebootAtScheduledTime
+  microsoftUpdateServiceAllowed: true
+  driversExcluded: false
+  qualityUpdatesDeferralPeriodInDays: 0
+  featureUpdatesDeferralPeriodInDays: 0
+  businessReadyUpdatesOnly: userDefined
+  updateWeeks: everyWeek
+  featureUpdatesRollbackWindowInDays: 30
+  userPauseAccess: enabled
+  userWindowsUpdateScanAccess: enabled
+  updateNotificationLevel: disableAllNotifications
+  allowWindows11Upgrade: false
+  deliveryOptimizationMode: userDefined
+  prereleaseFeatures: userDefined
+  skipChecksBeforeRestart: false
+  installationSchedule:
+    scheduledInstallDay: everyday
+    scheduledInstallTime: "04:00:00"

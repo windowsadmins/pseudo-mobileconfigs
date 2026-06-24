@@ -1,0 +1,51 @@
+# Reference: https://chromeenterprise.google/intl/en_ca/policies/
+
+displayName: "SharedChromePrefs"
+description: "Sets prefernces for Google Chrome on Shared devices."
+identifier: "com.example.winadmins.SharedChromePrefs"
+version: 2025.02.18
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Block Chrome ThirdParty Cookies"
+    description: "Block Chrome ThirdParty Cookies"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Chrome~Policy~googlechrome/BlockThirdPartyCookies"
+    value: "0"
+  - name: "Chrome Safe Browsing Protection Level"
+    description: "Chrome Safe Browsing Protection Level"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Chrome~Policy~googlechrome~SafeBrowsing/SafeBrowsingProtectionLevel"
+    value: "2"
+  - name: "Google Chrome Secure Connection"
+    description: "Google Chrome Secure Connection"
+    dataType: String
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Chrome~Policy~googlechrome~Security/SecureConnectionsEnabled"
+    value:
+      enabled: true
+  - name: "Google Chrome Warn on Insecure Public Sites"
+    description: "Google Chrome Warn on Insecure Public Sites"
+    dataType: String
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Chrome~Policy~googlechrome~Security/InsecurePublicSitesWarningEnabled"
+    value:
+      enabled: true
+  - name: "Google Chrome Do Not Track"
+    description: "Google Chrome Do Not Track"
+    dataType: String
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Chrome~Policy~googlechrome~Privacy/DoNotTrackEnabled"
+    value:
+      enabled: true
+  - name: "Google Chrome Incognito Mode"
+    description: "Control Chrome Incognito/Private Browsing"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Chrome~Policy~googlechrome~IncognitoModeAvailability"
+    value: "1" 
+  - name: "Google Chrome Homepage"
+    description: "Google Chrome Homepage"
+    dataType: String
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Chrome~Policy~googlechrome/HomepageLocation"
+    value: "https://intranet.example.com/bookmarks/StudentBookmarks.html" 

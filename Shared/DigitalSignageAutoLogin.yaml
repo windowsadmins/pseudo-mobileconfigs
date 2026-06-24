@@ -1,0 +1,59 @@
+displayName: "DigitalSignageAutoLogin"
+identifier: "com.example.winadmins.DigitalSignageAutoLogin"
+description: >
+  Creates a local “digitalsignage” account and configures perpetual
+  auto-sign-in for Lenovo ThinkCentre Windows 11 kiosks.
+
+category: Kiosk
+version: 2025.07.03
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "22H2"
+
+omaSettings:
+  # -------------------------------------------------------------------
+  # 1) Create the local account with the Accounts CSP
+  # -------------------------------------------------------------------
+  - name: "Signage account password"
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Accounts/Users/digitalsignage/Password"
+    value: "REPLACE_WITH_SIGNAGE_PASSWORD"
+
+  # 0 = Standard Users (leave at 0 unless the signage app requires admin)
+  - name: "Signage account group"
+    dataType: "Integer"
+    omaUri: "./Device/Vendor/MSFT/Accounts/Users/digitalsignage/LocalUserGroup"
+    value: 0
+
+  # -------------------------------------------------------------------
+  # 2) Classic Winlogon keys for AutoAdminLogon
+  #    (all REG_SZ except AutoLogonCount)
+  # -------------------------------------------------------------------
+  - name: "DefaultUserName"
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Registry/HKLM/SOFTWARE/Microsoft/Windows NT/CurrentVersion/Winlogon/DefaultUserName"
+    value: "digitalsignage"
+
+  - name: "DefaultPassword"
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Registry/HKLM/SOFTWARE/Microsoft/Windows NT/CurrentVersion/Winlogon/DefaultPassword"
+    value: "REPLACE_WITH_SIGNAGE_PASSWORD"
+
+  # “.” means ‘this PC’ (local SAM)
+  - name: "DefaultDomainName"
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Registry/HKLM/SOFTWARE/Microsoft/Windows NT/CurrentVersion/Winlogon/DefaultDomainName"
+    value: "."
+
+  - name: "AutoAdminLogon"
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Registry/HKLM/SOFTWARE/Microsoft/Windows NT/CurrentVersion/Winlogon/AutoAdminLogon"
+    value: "1"
+
+  # 0 = infinite – delete the key later if you want the logon to persist
+  - name: "AutoLogonCount"
+    dataType: "Integer"
+    omaUri: "./Device/Vendor/MSFT/Registry/HKLM/SOFTWARE/Microsoft/Windows NT/CurrentVersion/Winlogon/AutoLogonCount"
+    value: 0

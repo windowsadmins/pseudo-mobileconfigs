@@ -1,0 +1,28 @@
+displayName: "LenovoVantagePrefs"
+description: "Disable UI and schedules installs to Sun 02:00 install"
+identifier: "com.example.winadmins.LenovoVantagePrefs"
+version: 2025.04.23
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "DisableUI"
+    description: "Turns off all end-user prompts"
+    dataType: "Integer"
+    omaUri: "./Vendor/MSFT/Policy/Config/LenovoCommercialVantage~Policy~AutoUpdate/AutoUpdateEnabled"
+    value: 0
+
+  - name: "ScheduleDay"
+    description: "Day of week (0 = Sun)"
+    dataType: "Integer"
+    omaUri: "./Vendor/MSFT/Policy/Config/LenovoCommercialVantage~Policy~Schedule/ScheduleDayOfWeekForAutoUpdate"
+    value: 0
+
+  - name: "ScheduleTime"
+    description: "Install hour (02:00)"
+    dataType: "Integer"
+    omaUri: "./Vendor/MSFT/Policy/Config/LenovoCommercialVantage~Policy~Schedule/ScheduleTimeOfDayForAutoUpdate"
+    value: 2

@@ -1,0 +1,45 @@
+# Reference: https://mozilla.github.io/policy-templates/
+
+displayName: "SharedFirefoxPrefs"
+description: "Sets preferences for Firefox on Shared devices."
+identifier: "com.example.winadmins.SharedFirefoxPrefs"
+version: 2025.02.18
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Block Firefox ThirdParty Cookies"
+    description: "Block Firefox ThirdParty Cookies"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Firefox~Policy~firefox~Cookies/BlockThirdPartyCookies"
+    value: "0"
+  - name: "Firefox Safe Browsing Protection Level"
+    description: "Firefox Safe Browsing Protection Level"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Firefox~Policy~firefox~SafeBrowsing/SafeBrowsingProtectionLevel"
+    value: "2"
+  - name: "Firefox Secure Connection"
+    description: "Firefox Secure Connection"
+    dataType: String
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Firefox~Policy~firefox~Security/SecureConnectionsEnabled"
+    value:
+      enabled: true
+  - name: "Firefox Do Not Track"
+    description: "Firefox Do Not Track"
+    dataType: String
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Firefox~Policy~firefox~Privacy/DoNotTrackEnabled"
+    value:
+      enabled: true
+  - name: "Firefox Private Browsing"
+    description: "Control Firefox InPrivate (Private Browsing)"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Firefox~Policy~firefox~Privacy/PrivateBrowsingEnabled"
+    value: "1"
+  - name: "Firefox Homepage"
+    description: "Firefox Homepage"
+    dataType: String
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Firefox~Policy~firefox/Homepage"
+    value: "https://intranet.example.com/bookmarks/StudentBookmarks.html"

@@ -1,0 +1,16 @@
+displayName: "DisableBluetooth"
+identifier: "com.example.winadmins.DisableBluetooth"
+description: "Disable Windows Bluetooth"
+category: System
+version: 2025.05.09
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Disable Windows Copilot"
+    dataType: "Integer"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Bluetooth/AllowBluetooth"
+    value: "0" 

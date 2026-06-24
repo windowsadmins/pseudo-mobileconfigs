@@ -1,0 +1,31 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/passportforwork-csp
+# Enables Cloud Kerberos Trust so Entra ID joined devices get a partial TGT
+# exchanged with on-prem DC for full Kerberos TGT — required for SSO to
+# on-prem SMB file shares (fileserver.example.com, homeserver.example.com)
+#
+# Prerequisites (AD side — already done 2025-12-12):
+#   krbtgt_AzureAD object created via Set-AzureADKerberosServer on DC.EXAMPLE.COM
+#
+# Verify on client:
+#   dsregcmd /status → OnPremTgt: YES
+
+displayName: "EnableCloudKerberosTrust"
+description: "Cloud Kerberos Trust for on-prem resource SSO from Entra ID joined devices"
+identifier: "com.example.winadmins.EnableCloudKerberosTrust"
+version: "2026.03.24"
+platform: "windows10"
+roleScopeTagIds:
+  - 0
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+settingsCatalog:
+  - definitionId: "device_vendor_msft_passportforwork_{tenantid}"
+    kind: "groupCollection"
+    children:
+      - definitionId: "device_vendor_msft_passportforwork_{tenantid}_policies_usecloudtrustforonpremauth"
+        kind: "choice"
+        value: "device_vendor_msft_passportforwork_{tenantid}_policies_usecloudtrustforonpremauth_true"

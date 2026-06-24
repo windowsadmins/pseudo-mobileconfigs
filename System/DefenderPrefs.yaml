@@ -1,0 +1,133 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-defender
+
+displayName: "DefenderPrefs"
+description: "Settings for Windows Defender to improve security and privacy. Orchestrated and managed from DevOps repo, do not edit directly."
+identifier: "com.example.winadmins.DefenderPrefs"
+version: 2026.01.13
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Enable cloud-delivered protection"
+    description: "Turn on cloud-delivered protection"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Defender/AllowCloudProtection"
+    value: "1"
+  - name: "Enable Behavior Monitoring"
+    description: "Turn on Behavior Monitoring"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Defender/AllowBehaviorMonitoring"
+    value: "1"
+  - name: "Enable Email Scanning"
+    description: "Turn on Email Scanning"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Defender/AllowEmailScanning"
+    value: "1"
+  - name: "Enable Realtime Monitoring"
+    description: "Turn on Realtime Monitoring"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Defender/AllowRealtimeMonitoring"
+    value: "1"                
+  - name: "Enable Network Protection"
+    description: "Turn on Network Protection"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Defender/EnableNetworkProtection"
+    value: "2"
+  - name: "Enable CPU Load Factor"
+    description: "Turn on CPU Load Factor"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Defender/AvgCPULoadFactor"
+    value: "40"  
+  - name: "Enable Attack Surface Reduction Rules"
+    description: "Turn on Attack Surface Reduction Rules from https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-reference"
+    dataType: String
+    omaUri: "./Vendor/MSFT/Policy/Config/Defender/AttackSurfaceReductionRules"
+    # GUID mappings:
+    # 75668c1f-73b5-4cf0-bb93-3ecf5cb7cc84: Block executable content from email and webmail clients
+    # 3b576869-a4ec-4529-8536-b80a7769e899: Block executable content from Office applications
+    # d4f940ab-401b-4efc-aadc-ad5f3c50688a: Block Office applications from creating executable content
+    # 92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b: Block execution of potentially obfuscated scripts
+    # 5beb7efe-fd9a-4556-801d-275e5ffc04cc: Block executable files from running unless they meet criteria (e.g., prevalence, age, or trusted list)
+    # d3e037e1-3eb8-44c8-a917-57927947596d: Block process creations originating from PowerShell scripts
+    # 9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2: Block Win32 API calls from Office macro processes
+    # d1e49aac-8f56-4280-b9ba-993a6d77406c: Block all Office applications from creating child processes
+    # b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4: Block untrusted and unsigned processes that run from USB
+    # 01443614-cd74-433a-b99e-2ecdc07bfc25: Block running of potentially obfuscated scripts in Office
+    # be9ba2d9-53ea-4cdc-84e5-9b1eeee46550: Block indirect branch tracking (verify mapping)
+    # c1db55ab-c21a-4637-bb3f-a12568109d35: Prevent Office from creating child processes (verify mapping)
+    # 7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c: Block potentially obfuscated macros
+    # 26190899-1602-49e8-8b27-eb1d0a1ce869: Block Office communication application from creating child processes
+    # e6db77e5-3df2-4cf1-b95a-636979351e5b: Block JavaScript or VBScript from launching downloaded executable content
+    # 56a863a9-875e-4185-98a7-b882c64b5ce5: Block abuse of exploited vulnerable signed drivers
+    value: "75668c1f-73b5-4cf0-bb93-3ecf5cb7cc84=1|3b576869-a4ec-4529-8536-b80a7769e899=1|d4f940ab-401b-4efc-aadc-ad5f3c50688a=1|92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b=1|5beb7efe-fd9a-4556-801d-275e5ffc04cc=1|d3e037e1-3eb8-44c8-a917-57927947596d=1|9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2=1|d1e49aac-8f56-4280-b9ba-993a6d77406c=1|b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4=1|01443614-cd74-433a-b99e-2ecdc07bfc25=1|be9ba2d9-53ea-4cdc-84e5-9b1eeee46550=1|c1db55ab-c21a-4637-bb3f-a12568109d35=1|7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c=1|26190899-1602-49e8-8b27-eb1d0a1ce869=1|e6db77e5-3df2-4cf1-b95a-636979351e5b=1|56a863a9-875e-4185-98a7-b882c64b5ce5=1"
+  # =========================================================================
+  # ASR Only Exclusions -- single consolidated list for the entire fleet.
+  #
+  # IMPORTANT: do NOT add this OMA-URI to any other profile. Intune treats
+  # duplicate OMA-URIs across assigned profiles as conflicts; multiple
+  # per-app profiles setting this URI caused 200+ device conflicts in the
+  # past. Add new app paths to the value block below.
+  #
+  # Defender CSP parses the value as newline-separated paths (wildcards OK)
+  # -- so the value MUST contain only paths, no inline comments.
+  # Inventory of what's in the list, grouped by purpose:
+  #   - BookManager (Gallery)        -- \\bateson\bm\* network share
+  #   - F9 Reporter (Finance)        -- C:\F9Reporter\* Excel-launched
+  #   - Hasselblad FlexColor scanner -- needs ASR rule b2b3f03d exemption
+  #   - Sorbis (Curriculum)          -- C:\Program Files\sorbis\* (added 2026-05)
+  #   - Developer toolchains         -- pwsh, go, node, python, .NET, MSBuild
+  # =========================================================================
+  - name: "ASR Only Exclusions"
+    description: "Consolidated AttackSurfaceReductionOnlyExclusions for all approved apps and developer toolchains. Edit the value list to add new exclusions; keep one path per line and no comments inside the value."
+    dataType: String
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Defender/AttackSurfaceReductionOnlyExclusions"
+    value: |-
+      \\bateson\bm\bkmngr.exe
+      \\bateson\bm\*.dll
+      C:\F9Reporter\F9R.exe
+      C:\F9Reporter\F9CM64.exe
+      C:\F9Reporter\F9CM32.exe
+      C:\F9Reporter\F9Scheduler.exe
+      C:\F9Reporter\*.dll
+      C:\Program Files\Hasselblad\FlexColor v4.8.9.1\
+      C:\Program Files\sorbis\sorbis.exe
+      C:\Program Files\sorbis\*.dll
+      %USERPROFILE%\go\bin\*
+      C:\Program Files\PowerShell\*\pwsh.exe
+      C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+      C:\Program Files\nodejs\*
+      %USERPROFILE%\AppData\Roaming\npm\*
+      %LOCALAPPDATA%\Programs\Python\*\python*.exe
+      %LOCALAPPDATA%\Microsoft\WindowsApps\python*.exe
+      C:\Program Files\Python*\python*.exe
+      C:\Program Files\dotnet\dotnet.exe
+      C:\Program Files\Microsoft Visual Studio\*\MSBuild\Current\Bin\MSBuild.exe
+      C:\Program Files\Microsoft Visual Studio\*\MSBuild\Current\Bin\Roslyn\csc.exe
+  - name: "Disable Automatic Data Collection"
+    description: "This policy setting determines whether Enhanced Phishing Protection can collect additional information-such as content displayed, sounds played, and application memory-when your users enter their work or school password into a suspicious website or app. This information is used only for security purposes and helps SmartScreen determine whether the website or app is malicious."
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/WebThreatDefense/AutomaticDataCollection"
+    value: "0"
+  - name: "Enable Notify Malicious"
+    description: "This policy setting determines whether Enhanced Phishing Protection in Microsoft Defender SmartScreen warns your users if they type their work or school password into one of the following malicious scenarios: into a reported phishing site, into a Microsoft login URL with an invalid certificate, or into an application connecting to either a reported phishing site or a Microsoft login URL with an invalid certificate."
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/WebThreatDefense/NotifyMalicious"
+    value: "1"
+  - name: "Disable Notify Password Reuse"
+    description: "This policy setting determines whether Enhanced Phishing Protection in Microsoft Defender SmartScreen warns your users if they reuse their work or school password."
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/WebThreatDefense/NotifyPasswordReuse"
+    value: "0"
+  - name: "Enable Notify Unsafe App"
+    description: "This policy setting determines whether Enhanced Phishing Protection in Microsoft Defender SmartScreen warns your users if they type their work or school passwords in Notepad, Winword, or M365 Office apps like OneNote, Word, Excel, etc."
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/WebThreatDefense/NotifyUnsafeApp"
+    value: "1"
+  - name: "Enable Service Enabled"
+    description: "This policy setting determines whether Enhanced Phishing Protection in Microsoft Defender SmartScreen is in audit mode or off. Users don't see notifications for any protection scenarios when Enhanced Phishing Protection in Microsoft Defender is in audit mode. Audit mode captures unsafe password entry events and sends telemetry through Microsoft Defender."
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/WebThreatDefense/ServiceEnabled"
+    value: "1"

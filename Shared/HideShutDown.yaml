@@ -1,0 +1,18 @@
+# Reference: https://learn.microsoft.com/windows/client-management/mdm/policy-csp-start#hideshutdown
+
+displayName: "HideShutDown"
+identifier: "com.example.winadmins.HideShutDown"
+description: "Removes shut down option from the Power menu while leaving Restart, Sleep, etc. available."
+category: Shared
+version: 2025.05.01
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Hide Shut Down"
+    dataType: "Integer"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Start/HideShutDown"
+    value: "1"

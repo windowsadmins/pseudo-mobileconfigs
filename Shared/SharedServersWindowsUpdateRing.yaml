@@ -1,0 +1,41 @@
+# Reference: https://learn.microsoft.com/en-us/graph/api/resources/intune-deviceconfig-windowsupdateforbusinessconfiguration
+#
+# Manual-only Windows Update ring for servers under Shared/Provisioning/Servers
+# (NILE and any future server manifests). These machines must never install
+# updates on their own: Windows downloads and notifies, but installs and
+# reboots happen exclusively through us — a Cimian package, a remote session,
+# or a deliberate cimian-intune-windowspatch.yml run.
+#
+# Devices-Shared-Provisioning-Servers is excluded from SharedWindowsUpdateRing
+# (assignmentExcludeGroups there) so this ring is the only one that applies —
+# two update rings on the same device is an Intune conflict.
+#
+# No installationSchedule on purpose: notifyDownload has nothing to schedule.
+
+displayName: "SharedServersWindowsUpdateRing"
+description: "Manual-only Windows Update ring for Shared/Provisioning/Servers. Notify-download only; never auto-install, never auto-reboot."
+identifier: "com.example.winadmins.SharedServersWindowsUpdateRing"
+version: 2026.06.12
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "22H2"
+
+windowsUpdate:
+  type: updateRing
+  automaticUpdateMode: notifyDownload
+  microsoftUpdateServiceAllowed: true
+  driversExcluded: true
+  qualityUpdatesDeferralPeriodInDays: 0
+  featureUpdatesDeferralPeriodInDays: 0
+  businessReadyUpdatesOnly: userDefined
+  updateWeeks: everyWeek
+  featureUpdatesRollbackWindowInDays: 30
+  userPauseAccess: disabled
+  userWindowsUpdateScanAccess: disabled
+  updateNotificationLevel: disableAllNotifications
+  allowWindows11Upgrade: false
+  deliveryOptimizationMode: userDefined
+  prereleaseFeatures: userDefined
+  skipChecksBeforeRestart: false

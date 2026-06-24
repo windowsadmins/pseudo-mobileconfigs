@@ -1,0 +1,23 @@
+# Enables process creation and termination auditing (Events 4688/4689) required
+# for ReportMate application utilization tracking via the applications module.
+# Without this, the runner reports isCaptureEnabled: false and collects no usage data.
+# Only Success auditing is enabled — no Failure, no command-line capture.
+
+displayName: ReportMateAuditPolicy
+identifier: com.example.winadmins.ReportMateAuditPolicy
+description: Enables process creation and termination auditing for ReportMate application utilization tracking.
+version: 2026.03.05
+platform: "windows10"
+roleScopeTagIds:
+  - 0
+
+settingsCatalog:
+  # Audit Process Creation — generates Event 4688 when a process starts
+  - kind: "choice"
+    definitionId: "device_vendor_msft_policy_config_audit_detailedtracking_auditprocesscreation"
+    value: "device_vendor_msft_policy_config_audit_detailedtracking_auditprocesscreation_1"
+
+  # Audit Process Termination — generates Event 4689 when a process ends
+  - kind: "choice"
+    definitionId: "device_vendor_msft_policy_config_audit_detailedtracking_auditprocesstermination"
+    value: "device_vendor_msft_policy_config_audit_detailedtracking_auditprocesstermination_1"

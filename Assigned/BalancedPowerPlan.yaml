@@ -1,0 +1,16 @@
+displayName: "BalancedPowerPlan"
+description: "Optimizes battery usage by enabling the Balanced power plan."
+identifier: "com.example.winadmins.BalancedPowerPlan"
+version: "2025.02.14"
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Optimize Battery Usage with Balanced Performance"
+    description: "Optimizes battery usage by enabling the Balanced power plan, balancing performance and battery life."
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Power/PowerPlanEnabled"
+    value: "<Balanced/>"

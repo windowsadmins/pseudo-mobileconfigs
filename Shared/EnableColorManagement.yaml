@@ -1,0 +1,17 @@
+displayName: "EnableColorManagement"
+identifier: "com.example.winadmins.EnableColorManagement"
+description: "Enables Auto Color Management to ensure apps and other content display accurate colors without HDR."
+category: System
+version: 2025.06.11
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Enable Automatic Color Management"
+    description: "Enables automatic color management for displays that support it."
+    dataType: "Integer"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Display/EnableAutoColorManagement"
+    value: 1

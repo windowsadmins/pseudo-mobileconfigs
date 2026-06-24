@@ -1,0 +1,45 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-devicehealthmonitoring
+
+displayName: "DeviceHealthMonitoring"
+description: "Configure Device Health Monitoring settings for Device"
+identifier: "com.example.winadmins.DeviceHealthMonitoring"
+version: "2025.03.25"
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Enable Health Monitoring"
+    description: "Turns on Health Monitoring"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/DeviceHealthMonitoring/AllowDeviceHealthMonitoring"
+    value: "1"
+
+  - name: "Configure Scope"
+    description: "Configure device health scope"
+    dataType: String
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/DeviceHealthMonitoring/ConfigDeviceHealthMonitoringScope"
+    value:
+      enabled: true
+      dataId: "ConfigDeviceHealthMonitoringScope"
+      dataValue: "EndpointAnalytics"
+
+  - name: "Configure Service Instance"
+    description: "Configure Service Instance"
+    dataType: String
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/DeviceHealthMonitoring/ConfigDeviceHealthMonitoringServiceInstance"
+    value:
+      enabled: true
+      dataId: "ConfigDeviceHealthMonitoringServiceInstance"
+      dataValue: "DefaultServiceInstance"
+
+  - name: "Configure Upload Destination"
+    description: "Configure Upload Destination"
+    dataType: String
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/DeviceHealthMonitoring/ConfigDeviceHealthMonitoringUploadDestination"
+    value:
+      enabled: true
+      dataId: "ConfigDeviceHealthMonitoringUploadDestination"
+      dataValue: "DefaultUploadDestination"

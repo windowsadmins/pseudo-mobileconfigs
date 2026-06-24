@@ -1,0 +1,15 @@
+# reference: "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-admx-filesys#longpathsenabled"
+
+displayName: "LongPathsEnabled"
+identifier: "com.example.winadmins.LongPathsEnabled"
+description: "Enables Win32 long paths by setting the ADMX-backed LongPathsEnabled policy."
+category: System
+version: 2025.12.17
+platform: "windows10"
+roleScopeTagIds:
+  - 0
+
+settingsCatalog:
+  - kind: "choice"
+    definitionId: "device_vendor_msft_policy_config_admx_filesys_longpathsenabled"
+    value: "device_vendor_msft_policy_config_admx_filesys_longpathsenabled_1"

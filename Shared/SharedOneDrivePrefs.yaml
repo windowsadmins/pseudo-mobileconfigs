@@ -1,0 +1,130 @@
+# OneDrive Settings Catalog Profile for Shared Lab Devices
+# Uses correct Settings Catalog definition IDs with proper choice/children structure
+
+displayName: SharedOneDrivePrefs
+identifier: com.example.winadmins.SharedOneDrivePrefs
+version: 2025.09.06
+description: Configures OneDrive for shared lab devices with multiple users. Files On-Demand enabled, KFM disabled for shared environments.
+platform: "windows10"
+roleScopeTagIds:
+  - 0
+
+# Deployment Notes for Shared Lab Devices:
+# 1. Tenant ID: 00000000-0000-0000-0000-000000000000 (Example Organization)
+# 2. Known Folder Move is DISABLED - inappropriate for shared devices
+# 3. Bandwidth limits set to prevent network congestion
+# 4. Files On-Demand enforced to save local storage
+# 5. Personal OneDrive accounts blocked for institutional compliance
+# 6. More conservative settings for multi-user environment
+
+settingsCatalog:
+  # ============================================
+  # DEVICE-SCOPE SETTINGS (Computer Configuration)
+  # ============================================
+  
+  # Enable Silent Account Configuration for automatic OneDrive sign-in
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_silentaccountconfig"
+    kind: "choice"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_silentaccountconfig_1"
+    
+  # Enable Files On-Demand (critical for shared devices with limited storage)
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_filesondemandenabled"
+    kind: "choice"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_filesondemandenabled_1"
+
+  # Convert synced team sites to online-only (dehydrate) - important for lab devices
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_dehydratesyncedteamsites"
+    kind: "choice"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_dehydratesyncedteamsites_1"
+
+  # Block users from changing KFM settings
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_kfmblockoptout"
+    kind: "choice"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_kfmblockoptout_1"
+
+  # CRITICAL FOR SHARED DEVICES: Block Known Folder Move entirely
+  # This prevents automatic redirection of Desktop/Documents for shared lab computers
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_blockknownfoldermove"
+    kind: "choice"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_blockknownfoldermove_1"
+
+  # Block external sync - only allow Example Organization tenant
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_blockexternalsync"
+    kind: "choice"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_blockexternalsync_1"
+
+  # Enable forced local mass delete detection (safety - warn before bulk deletes)
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_forcedlocalmassdeletedetection"
+    kind: "choice"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_forcedlocalmassdeletedetection_1"
+
+  # Automatic upload bandwidth percentage (50% for shared environment - more conservative)
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_automaticuploadbandwidthpercentage"
+    kind: "choiceWithChildren"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_automaticuploadbandwidthpercentage_1"
+    children:
+      - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_automaticuploadbandwidthpercentage_bandwidthspinbox"
+        kind: "simple"
+        valueType: "integer"
+        value: 50
+
+  # Allow only Example Organization tenant - choice with collection child
+  - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_allowtenantlist"
+    kind: "choiceWithChildren"
+    value: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_allowtenantlist_1"
+    children:
+      - definitionId: "device_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_allowtenantlist_allowtenantlistbox"
+        kind: "collection"
+        value:
+          - "00000000-0000-0000-0000-000000000000"
+
+  # ============================================
+  # USER-SCOPE SETTINGS (User Configuration)
+  # ============================================
+  
+  # Disable personal OneDrive accounts (business only for lab devices)
+  - definitionId: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_disablepersonalsync"
+    kind: "choice"
+    value: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_disablepersonalsync_1"
+
+  # Disable tutorial/first-run experience (critical for lab devices)
+  - definitionId: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_disablefretutorial"
+    kind: "choice"
+    value: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_disablefretutorial_1"
+
+  # Enable all Office apps co-authoring
+  - definitionId: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_enableallocsiclients"
+    kind: "choice"
+    value: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_enableallocsiclients_1"
+
+  # Don't hold files when user signs out (shared device behavior)
+  - definitionId: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_enableholdthefile"
+    kind: "choice"
+    value: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_enableholdthefile_0"
+
+  # Upload bandwidth limit (2048 KB/s = 2MB/s for shared devices)
+  - definitionId: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_uploadbandwidthlimit"
+    kind: "choiceWithChildren"
+    value: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_uploadbandwidthlimit_1"
+    children:
+      - definitionId: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_uploadbandwidthlimit_uploadratevalue"
+        kind: "simple"
+        valueType: "integer"
+        value: 2048
+
+  # Download bandwidth limit (5120 KB/s = 5MB/s for shared devices)
+  - definitionId: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_downloadbandwidthlimit"
+    kind: "choiceWithChildren"
+    value: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_downloadbandwidthlimit_1"
+    children:
+      - definitionId: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_downloadbandwidthlimit_downloadratevalue"
+        kind: "simple"
+        valueType: "integer"
+        value: 5120
+
+  # Disable pause on metered network (lab devices are always wired)
+  - definitionId: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_disablepauseonmeterednetwork"
+    kind: "choice"
+    value: "user_vendor_msft_policy_config_onedrivengscv2~policy~onedrivengsc_disablepauseonmeterednetwork_1"
+
+

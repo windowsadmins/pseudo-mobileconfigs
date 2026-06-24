@@ -1,0 +1,33 @@
+displayName: "MountRenderDrive"
+identifier: "com.example.winadmins.MountRenderDrive"
+description: "Maps a render share to the R: drive via Drive-Letter Factory ADMX"
+version: 2025.06.05
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  # Map the R: drive
+  - name: "Drive_R_Map"
+    description: "Map R: to \\\\fileserver.example.com\\render\\%username%"
+    dataType: "String (XML file)"
+    omaUri: "./user/Vendor/MSFT/Policy/Config/DriveMapping~Policy~DriveMapping/Drive_R"
+    value: |
+      <enabled/>
+      <data id="Drive_R_RemotePath" value="\\fileserver.example.com\render\%username%"/>
+  # Map the Q: drive (per-user home share)
+  - name: "Drive_Q_Map"
+    description: "Map Q: to \\\\homeserver.example.com\\home\\%username%"
+    dataType: "String (XML file)"
+    omaUri: "./user/Vendor/MSFT/Policy/Config/DriveMapping~Policy~DriveMapping/Drive_Q"
+    value: |
+      <enabled/>
+      <data id="Drive_Q_RemotePath" value="\\homeserver.example.com\home"/>
+  # Suppress reconnect warnings
+  - name: "ReconnectNetworkDrivesWarning"
+    description: "Disable the reconnect-network-drives prompt"
+    dataType: "String (XML file)"
+    omaUri: "./user/Vendor/MSFT/Policy/Config/DriveMapping~Policy~DriveMapping/ReconnectNetworkDrivesWarning"
+    value: "<disabled/>" 

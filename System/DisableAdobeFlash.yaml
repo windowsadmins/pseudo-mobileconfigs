@@ -1,0 +1,19 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-browser#allowflash
+
+displayName: "DisableAdobeFlash"
+identifier: "com.example.winadmins.DisableAdobeFlash"
+description: "Disable Adobe Flash on all devices"
+category: System
+version: 2025.03.25
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+  
+omaSettings:
+  - name: "Disable Flash"
+    description: "Disable Falsh"
+    dataType: "Integer"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Browser/AllowFlash"
+    value: "0"

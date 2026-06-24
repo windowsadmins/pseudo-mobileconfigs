@@ -1,0 +1,48 @@
+# Reference: https://learn.microsoft.com/en-us/graph/api/resources/intune-deviceconfig-windowsupdateforbusinessconfiguration
+#
+# Windows Update for Business ring for Assigned (1:1) endpoints.
+# Steady-state policy: deferral=0 (apply latest CU as soon as MS publishes),
+# install Wednesday 04:00, give user a restart warning so they can defer
+# briefly. Pairs with AssignedWindowsUpdateHotpatch which provides no-reboot
+# CUs on hotpatch-eligible months.
+
+displayName: "AssignedWindowsUpdateRing"
+description: "Windows Update for Business ring for Assigned (1:1) endpoints. Installs Wednesday 04:00, restart warning shown."
+identifier: "com.example.winadmins.AssignedWindowsUpdateRing"
+version: 2026.05.15
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "22H2"
+
+windowsUpdate:
+  type: updateRing
+  automaticUpdateMode: autoInstallAndRebootAtScheduledTime
+  microsoftUpdateServiceAllowed: true
+  driversExcluded: false
+  qualityUpdatesDeferralPeriodInDays: 0
+  featureUpdatesDeferralPeriodInDays: 0
+  businessReadyUpdatesOnly: userDefined
+  # everyWeek + scheduledInstallDay=wednesday is deterministically "Patch
+  # Tuesday + 1 day" because Microsoft only releases CUs on Patch Tuesday,
+  # so the next Wednesday is the first install opportunity in every month.
+  # Avoids the secondWeek footgun where calendar-week-2 Wednesday can land
+  # BEFORE Patch Tuesday in months that start on Wed (e.g. Apr / Jul 2026).
+  # OOB updates released mid-month are picked up the very next Wednesday.
+  updateWeeks: everyWeek
+  featureUpdatesRollbackWindowInDays: 30
+  userPauseAccess: enabled
+  userWindowsUpdateScanAccess: enabled
+  updateNotificationLevel: restartWarningsOnly
+  allowWindows11Upgrade: false
+  deliveryOptimizationMode: userDefined
+  prereleaseFeatures: userDefined
+  skipChecksBeforeRestart: false
+  installationSchedule:
+    # 04:00 chosen over 23:00 to align with Shared and to avoid interrupting
+    # users who may still be on their laptop late evening (kids' homework,
+    # personal use). At 4am nothing should be in active use, so the forced
+    # reboot is effectively invisible.
+    scheduledInstallDay: wednesday
+    scheduledInstallTime: "04:00:00"

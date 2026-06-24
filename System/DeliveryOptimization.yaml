@@ -1,0 +1,54 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-deliveryoptimization
+
+displayName: "DeliveryOptimization"
+description: "Optimizes how Windows delivers updates and apps across devices in the network."
+identifier: "com.example.winadmins.DeliveryOptimizationPrefs"
+version: "2025.02.12"
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Enable Download Mode (HTTP blended with peering behind the same NAT)"
+    description: "Activates Download Mode, which uses HTTP combined with peering behind the same NAT for optimized delivery."
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/DeliveryOptimization/DownloadMode"
+    value: "2"
+
+  - name: "Delay background HTTP download (in seconds)"
+    description: "Sets the minimum delay (in seconds) before allowing background HTTP downloads to start."
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/DeliveryOptimization/BackgroundDownloadMinimumDelay"
+    value: "60"
+
+  - name: "Minimum RAM required for peer caching (in GB)"
+    description: "Defines the minimum RAM (in GB) required for a device to participate in peer caching."
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/DeliveryOptimization/MinimumRAMForPeerCaching"
+    value: "4"
+
+  - name: "Minimum disk size required for peer caching (in GB)"
+    description: "Specifies the minimum disk size (in GB) required for peer caching functionality."
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/DeliveryOptimization/MinimumDiskSizeForPeerCaching"
+    value: "32"
+
+  - name: "Minimum content file size for peer caching (in MB)"
+    description: "Determines the minimum content file size (in MB) that will be considered for peer caching."
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/DeliveryOptimization/MinimumContentFileSizeForPeerCaching"
+    value: "10"
+
+  - name: "Maximum cache age (in days)"
+    description: "Sets the maximum number of days that cached content is considered valid before it is purged."
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/DeliveryOptimization/MaximumCacheAge"
+    value: "14"
+
+  - name: "Maximum cache size (in %)"
+    description: "Defines the maximum percentage of disk space that can be used for the Delivery Optimization cache."
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/DeliveryOptimization/MaximumCacheSize"
+    value: "20"

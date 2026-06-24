@@ -1,0 +1,19 @@
+# Enables logon success auditing (Event 4624) required for StartSet's
+# LogonEventWorker to detect interactive and RDP logons and execute
+# login-privileged scripts. Without this, the Security event log has
+# no logon events and StartSet login scripts never trigger.
+
+displayName: AuditLogonEvents
+identifier: com.example.winadmins.AuditLogonEvents
+description: Enables logon success auditing so StartSet can detect user logins and run login scripts.
+version: 2026.04.12
+platform: "windows10"
+roleScopeTagIds:
+  - 0
+
+settingsCatalog:
+  # Audit Logon — generates Event 4624 on successful logon
+  # _0 = None, _1 = Success, _2 = Failure, _3 = Success+Failure
+  - kind: "choice"
+    definitionId: "device_vendor_msft_policy_config_audit_accountlogonlogoff_auditlogon"
+    value: "device_vendor_msft_policy_config_audit_accountlogonlogoff_auditlogon_1"

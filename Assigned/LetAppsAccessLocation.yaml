@@ -1,0 +1,19 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-privacy#letappsaccesslocation
+
+displayName: "LetAppsAccessLocation"
+identifier: "com.example.winadmins.LetAppsAccessLocation"
+description: "Allow user control for apps accessing location"
+category: Privacy
+version: 2025.03.25
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Let Apps Access Location"
+    description: "User can decide whether apps may use location"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Privacy/LetAppsAccessLocation"
+    value: 2      # 0-Deny, 1-Allow, 2-User in control

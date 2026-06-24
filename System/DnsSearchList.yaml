@@ -1,0 +1,21 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-admx-dnsclient#dns_searchlist
+
+displayName: "DnsSearchList"
+identifier: "com.example.winadmins.DnsSearchList"
+description: "Provision Laptop can't resolve remote computer name via VPN. Specifies the DNS suffixes to attach to an unqualified single-label name before submission of a DNS query for that name to resolve"
+category: System
+version: 2025.06.03
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+  
+omaSettings:
+  - name: "DnsSearchList"
+    description: "DNS Search List"
+    dataType: "String (XML file)"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/ADMX_DnsClient/DNS_SearchList"
+    value: |-
+      <enabled/><data id="DNS_SearchListLabel" value="example.com,corp.example.com"/>
+

@@ -1,0 +1,18 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-start#hidepowerbutton
+
+displayName: "HidePowerButton"
+identifier: "com.example.winadmins.HidePowerButton"
+description: "Controls the visibility of the Power Button on the Windows Start menu"
+category: Shared
+version: 2025.03.25
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Hide Power Button"
+    dataType: "Integer"
+    omaUri: "./User/Vendor/MSFT/Policy/Config/Start/HidePowerButton"
+    value: "0"

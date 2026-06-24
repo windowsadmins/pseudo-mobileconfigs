@@ -1,0 +1,45 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/firewall-csp
+
+displayName: "DisableFirewall"
+description: "Disables the firewall on a shared devices to allow for easier network access when needed."
+identifier: "com.example.winadmins.DisableFirewall"
+version: 2025.01.31
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterpirse"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Disable Domain Profile"
+    description: "Disable Domain Profile"
+    dataType: Boolean
+    omaUri: "./Vendor/MSFT/Firewall/MdmStore/DomainProfile/DisableInboundNotifications"
+    value: true
+
+  - name: "Disable Private Profile"
+    description: "Disable Private Profile"
+    dataType: Boolean
+    omaUri: "./Vendor/MSFT/Firewall/MdmStore/PrivateProfile/DisableInboundNotifications"
+    value: true
+
+  - name: "Disable Public Profile"
+    description: "Disable Public Profile"
+    dataType: Boolean
+    omaUri: "./Vendor/MSFT/Firewall/MdmStore/PublicProfile/DisableInboundNotifications"
+    value: true
+
+  - name: "Disable Domain Firewall"
+    dataType: "Boolean"
+    omaUri: "./Vendor/MSFT/Firewall/MdmStore/DomainProfile/EnableFirewall"
+    value: false
+
+  - name: "Disable Private Firewall"
+    dataType: "Boolean"
+    omaUri: "./Vendor/MSFT/Firewall/MdmStore/PrivateProfile/EnableFirewall"
+    value: false
+
+  - name: "Disable Public Firewall"
+    dataType: "Boolean"
+    omaUri: "./Vendor/MSFT/Firewall/MdmStore/PublicProfile/EnableFirewall"
+    value: false

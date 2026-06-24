@@ -1,0 +1,32 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-defender
+
+displayName: ManagementToolsPrefs
+description: Microsoft Defender exclusions for enterprise management tools (BootstrapMate, Cimian, ReportMate) to prevent false positives.
+identifier: "com.example.winadmins.ManagementToolsPrefs"
+version: 2025.10.08
+platform: "windows10"
+roleScopeTagIds:
+  - 0
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+
+settingsCatalog:
+  # Excluded Paths - Array/Collection of paths
+  - kind: "collection"
+    definitionId: "device_vendor_msft_policy_config_defender_excludedpaths"
+    valueType: "string"
+    values:
+      - "C:\\Program Files\\BootstrapMate"
+      - "C:\\Program Files\\Cimian"
+      - "C:\\Program Files\\ReportMate"
+  
+  # Excluded Processes - Array/Collection of executables
+  - kind: "collection"
+    definitionId: "device_vendor_msft_policy_config_defender_excludedprocesses"
+    valueType: "string"
+    values:
+      - "installapplications.exe"
+      - "managedsoftwareupdate.exe"
+      - "managedreportsrunner.exe"

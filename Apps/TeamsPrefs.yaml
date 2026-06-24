@@ -1,0 +1,30 @@
+displayName: "TeamsPrefs"
+identifier: "com.example.winadmins.TeamsPrefs"
+description: >
+  Configures Microsoft Teams policies via registry CSP (HKLM\SOFTWARE\Policies\Microsoft\Teams).
+  Suppresses Teams Premium upsell badge and promotional popups.
+category: Apps
+version: 2026.03.18
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Teams - Hide Premium Upsell Badge (Classic)"
+    description: "Hides the 'Unlock Teams Premium' badge in Teams Classic header (HKLM policy)"
+    dataType: "Integer"
+    omaUri: "./Device/Vendor/MSFT/Registry/HKLM/SOFTWARE/Policies/Microsoft/Teams/HidePremiumUpsell"
+    value: 1
+
+  - name: "Teams - Hide Premium Badge (New Teams)"
+    description: "Hides the 'Unlock Teams Premium' badge in new Teams 2.x (HKLM policy)"
+    dataType: "Integer"
+    omaUri: "./Device/Vendor/MSFT/Registry/HKLM/SOFTWARE/Policies/Microsoft/Teams/HidePremiumBadge"
+    value: 1
+
+  - name: "Teams - Disable Premium Trial Popup"
+    description: "Suppresses the free Teams Premium trial promotional popup"
+    dataType: "Integer"
+    omaUri: "./Device/Vendor/MSFT/Registry/HKLM/SOFTWARE/Policies/Microsoft/Teams/DisableFreePremiumTrialPopup"
+    value: 1

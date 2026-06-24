@@ -1,0 +1,16 @@
+displayName: "Enable Location Service"
+description: "Enables Location Service for applications that require location data."
+identifier: "com.example.winadmins.EnableLocationService"
+version: "2025.02.14"
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Enable Location Service for Apps Requiring It"
+    description: "Enables Location Service for Applications that require location data."
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/LocationService/LocationServiceEnabled"
+    value: "true"

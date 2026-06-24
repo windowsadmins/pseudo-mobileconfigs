@@ -1,0 +1,72 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/rootcacertificates-csp
+#
+# Enterprise code-signing trust profile.
+#
+# Installs the ExampleOrg code-signing certificate(s) into both the Trusted
+# Root CAs store and the Trusted Publisher store on every managed endpoint.
+# Without these, custom .nupkg / .msi / signed binaries distributed outside
+# Intune's Win32-LOB upload path (Chocolatey, the Cimian CDN, background
+# PowerShell) classify as Untrusted Publisher and trigger SmartScreen /
+# Defender prompts.
+#
+# DURING A CERT ROTATION we ship BOTH the outgoing and incoming thumbprints
+# in parallel so artifacts already deployed under the old cert keep their
+# Trusted Publisher classification while new builds (signed under the new
+# cert) start landing on devices via managedsoftwareupdate / Intune. Once
+# every Cimian artifact in the fleet has been rebuilt + redeployed under
+# the new cert (typically a few hourly cycles after the build host rotates),
+# delete the legacy block.
+#
+# Authenticode integrity is preserved by the RFC3161 TSA counter-signature
+# applied at sign time, so binaries do NOT become invalid when a cert
+# expires; only the trust CLASSIFICATION shifts when the thumbprint is
+# evicted from the device's TrustedPublisher store.
+#
+# OMA-URI structure: RootCATrustedCertificates CSP. The path must terminate
+# at /EncodedCertificate; without that leaf the CSP rejects the Add with
+# 0x86000011 ("Unspecified error") and silently drops both Root and
+# TrustedPublisher entries. The legacy CertificateStore CSP path
+# (CertificateStore/.../Certificates/<thumb>) does not expose a
+# TrustedPublisher node at all and is unsupported here.
+
+displayName: "EnterpriseCertificates"
+description: "Pushes our Enterprise Certificate for code-signing certificate into Root and TrustedPublisher so our custom .nupkg/.msi/signed binaries install and run silently. Intune will report an `0x87D1FDE8` error but this is a false positive."
+version: 2026.04.28
+catalogs:
+  - Development
+  - Testing
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  # ---- Outgoing cert (11111111…) — expired 2026-04-26 23:32 UTC ----
+  # Kept here ONLY for the rotation-transition window so artifacts already
+  # deployed under this cert stay classified as Trusted Publisher. Delete
+  # once every Cimian artifact in the fleet has been rebuilt + redeployed
+  # under the 22222222… cert. The cert itself is past NotAfter but
+  # Authenticode classification persists via the RFC3161 timestamp.
+  - name: "CodeSign Root (legacy 11111111)"
+    dataType: Base64
+    omaUri: "./Device/Vendor/MSFT/RootCATrustedCertificates/Root/1111111111111111111111111111111111111111/EncodedCertificate"
+    value: "REPLACE_WITH_BASE64_DER_OF_YOUR_LEGACY_CODESIGN_CERT"
+
+  - name: "CodeSign TrustedPublisher (legacy 11111111)"
+    dataType: Base64
+    omaUri: "./Device/Vendor/MSFT/RootCATrustedCertificates/TrustedPublisher/1111111111111111111111111111111111111111/EncodedCertificate"
+    value: "REPLACE_WITH_BASE64_DER_OF_YOUR_LEGACY_CODESIGN_CERT"
+
+  # ---- Incoming cert (22222222…) — created 2026-03-27, expires 2027-03-27 ----
+  # Source: your-keyvault/CodeSigningCert
+  # All artifacts built after the rotation are signed under this thumbprint.
+  - name: "CodeSign Root"
+    dataType: Base64
+    omaUri: "./Device/Vendor/MSFT/RootCATrustedCertificates/Root/2222222222222222222222222222222222222222/EncodedCertificate"
+    value: "REPLACE_WITH_BASE64_DER_OF_YOUR_CURRENT_CODESIGN_CERT"
+
+  - name: "CodeSign TrustedPublisher"
+    dataType: Base64
+    omaUri: "./Device/Vendor/MSFT/RootCATrustedCertificates/TrustedPublisher/2222222222222222222222222222222222222222/EncodedCertificate"
+    value: "REPLACE_WITH_BASE64_DER_OF_YOUR_CURRENT_CODESIGN_CERT"

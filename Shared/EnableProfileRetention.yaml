@@ -1,0 +1,29 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-system#deleteuserprofilesolderthandays
+# User Profile Retention Configuration - Settings Catalog (ADMX)
+# Automatically removes inactive user profiles after specified retention period
+
+displayName: "EnableProfileRetention"
+description: "Delete user profiles that have been inactive for more than 28 days on system restart"
+identifier: "com.example.winadmins.EnableProfileRetention"
+version: "2025.02.06"
+platform: "windows10"
+roleScopeTagIds:
+  - 0
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+    - "Windows 10 Enterprise"
+  minVersion: "1803"
+
+settingsCatalog:
+  # Enable: Delete user profiles older than a specified number of days on system restart
+  - definitionId: "device_vendor_msft_policy_config_admx_userprofiles_cleanupprofiles"
+    kind: "choiceWithChildren"
+    value: "device_vendor_msft_policy_config_admx_userprofiles_cleanupprofiles_1"
+    children:
+      # Set the number of days to 28
+      - definitionId: "device_vendor_msft_policy_config_admx_userprofiles_cleanupprofiles_cleanupprofiles_days"
+        kind: "simple"
+        valueType: "integer"
+        value: 28

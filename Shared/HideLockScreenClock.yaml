@@ -1,0 +1,20 @@
+# Hide Lock Screen Clock and Date
+# Hides the large central clock and date display on the Windows lock/login screen
+
+displayName: HideLockScreenClock
+identifier: com.example.winadmins.HideLockScreenClock
+version: 2026.01.30
+description: Hides the clock and date display on the Windows lock screen for a cleaner appearance
+platform: "windows10"
+roleScopeTagIds:
+  - 0
+
+# Registry Location: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+# Value: HideLockScreenClock (DWORD) = 1
+# Effect: Hides both the large central clock time and date text on lock/login screen
+
+settingsCatalog:
+  # Hide the clock and date on the lock screen
+  - definitionId: "device_vendor_msft_policy_config_windowslogon_hidelockscreenclock"
+    kind: "choice"
+    value: "device_vendor_msft_policy_config_windowslogon_hidelockscreenclock_1"

@@ -1,0 +1,16 @@
+displayName: "DisableSleepMode"
+description: "Disables sleep mode during critical tasks for uninterrupted work."
+identifier: "com.example.winadmins.DisableSleepMode"
+version: "2025.02.14"
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Disable Sleep Mode for Critical Tasks"
+    description: "Disables sleep mode during critical tasks to ensure uninterrupted work."
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Power/SleepModeDisabled"
+    value: "true"

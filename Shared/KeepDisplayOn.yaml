@@ -1,0 +1,26 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-power#displayofftimeoutonbattery
+
+displayName: "KeepDisplayOn"
+description: "Manages display so it stays on"
+identifier: "com.example.winadmins.KeepDisplayOn"
+version: 2025.01.31
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+
+  
+- name: "Display Off Timeout On Battery"
+  dataType: "String (XML file)"
+  omaUri: "./Device/Vendor/MSFT/Policy/Config/Power/DisplayOffTimeoutOnBattery"
+  value: |-
+      <enabled/><data id="EnterVideoDCPowerDownTimeOut" value="0"/>
+
+- name: "Display Off Timeout Plugged In"
+  dataType: "String (XML file)"
+  omaUri: "./Device/Vendor/MSFT/Policy/Config/Power/DisplayOffTimeoutPluggedIn"
+  value: |-
+      <enabled/><data id="EnterVideoACPowerDownTimeOut" value="0"/>

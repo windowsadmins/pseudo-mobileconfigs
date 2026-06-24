@@ -1,0 +1,54 @@
+# Reference: https://chromeenterprise.google/intl/en_ca/policies/
+
+displayName: "AssignedChromePrefs"
+description: "Sets preferences for Google Chrome to improve security and privacy."
+identifier: "com.example.winadmins.AssignedChromePrefs"
+version: 2025.04.02
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Block Chrome Third-Party Cookies"
+    description: "Block Chrome third-party cookies"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Chrome~Policy~googlechrome/BlockThirdPartyCookies"
+    value: 0           # integer, un-quoted
+
+  - name: "Chrome Safe Browsing Protection Level"
+    description: "Safe Browsing protection level (0-2)"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Chrome~Policy~googlechrome~SafeBrowsing/SafeBrowsingProtectionLevel"
+    value: 2
+
+  - name: "Google Chrome Secure Connection"
+    description: "Force HTTPS-first mode"
+    dataType: Boolean
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Chrome~Policy~googlechrome~Security/SecureConnectionsEnabled"
+    value: true
+
+  - name: "Google Chrome Warn on Insecure Public Sites"
+    description: "Warn on insecure public sites"
+    dataType: Boolean
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Chrome~Policy~googlechrome~Security/InsecurePublicSitesWarningEnabled"
+    value: true
+
+  - name: "Google Chrome Do Not Track"
+    description: "Enable Do-Not-Track header"
+    dataType: Boolean
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Chrome~Policy~googlechrome~Privacy/DoNotTrackEnabled"
+    value: true
+
+  - name: "Google Chrome Auto-Update Check Period"
+    description: "Check for updates every 24 h (seconds)"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Chrome~Policy~googlechrome/AutoUpdateCheckPeriodOverride"
+    value: 86400      # 24 h
+
+  - name: "Default Browser Settings"
+    description: "Set Chrome as default browser"
+    dataType: Boolean
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Chrome~Policy~googlechrome/DefaultBrowserSettingEnabled"
+    value: true

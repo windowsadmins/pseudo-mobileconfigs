@@ -1,0 +1,34 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-storage
+
+displayName: "EnableStorageSense"
+identifier: "com.example.winadmins.EnableStorageSense"
+description: "Enable and configure Storage Sense on Windows 11 Enterprise devices"
+category: System
+version: 2025.03.25
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Allow Storage Sense"
+    dataType: "Integer"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Storage/AllowStorageSenseGlobal"
+    value: "1"
+    
+  - name: "Optimize Disk Cleanup"
+    description: "Schedules regular disk cleanup to remove temporary files and free up space."
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Custom/DiskCleanupScheduled"
+    value: "true"
+
+  - name: "Set Storage Sense Global Cadence to Weekly"
+    dataType: "Integer"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Storage/ConfigStorageSenseGlobalCadence"
+    value: "7"
+
+  - name: "Set Storage Sense Recycle Bin Cleanup Threshold to 30 days"
+    dataType: "Integer"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Storage/ConfigStorageSenseRecycleBinCleanupThreshold"
+    value: "30"

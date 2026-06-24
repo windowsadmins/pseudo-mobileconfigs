@@ -1,0 +1,69 @@
+# Reference: https://docs.microsoft.com/en-us/windows/client-management/mdm/vpnv2-csp
+
+displayName: "WindowsVPN"
+description: "Configures a secure, native VPN connection for assigned Windows devices"
+identifier: "com.example.winadmins.WindowsVPN"
+version: 2025.02.25
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Assigned VPN Configuration"
+    description: "VPN profile for Assigned devices with Always-On connectivity and targeted traffic filtering"
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/VPNv2/Assigned_VPN_Profile/ProfileXML"
+    value: |
+      <VPNProfile>
+        <ProfileName>Assigned_VPN_Profile</ProfileName>
+        <NativeProfile>
+          <Servers>vpn.yourorganization.com</Servers>
+          <NativeProtocolType>IKEv2</NativeProtocolType>
+          <Authentication>
+            <UserMethod>Eap</UserMethod>
+            <Eap>
+              <Configuration>
+                <!-- Insert detailed EAP configuration here -->
+              </Configuration>
+            </Eap>
+          </Authentication>
+          <RoutingPolicyType>ForceTunnel</RoutingPolicyType>
+          <DisableClassBasedDefaultRoute>true</DisableClassBasedDefaultRoute>
+        </NativeProfile>
+        <Route>
+          <Address>10.0.0.0</Address>
+          <PrefixSize>8</PrefixSize>
+        </Route>
+        <AppTrigger>
+          <App>
+            <Id>Microsoft.MicrosoftEdge_8wekyb3d8bbwe</Id>
+          </App>
+        </AppTrigger>
+        <TrafficFilter>
+          <App>
+            <Id>%ProgramFiles%\YourApp\YourApp.exe</Id>
+          </App>
+          <Protocol>6</Protocol>
+          <LocalPortRanges>1000-2000</LocalPortRanges>
+          <RemotePortRanges>80,443</RemotePortRanges>
+          <RemoteAddressRanges>192.168.1.0/24</RemoteAddressRanges>
+          <RoutingPolicyType>ForceTunnel</RoutingPolicyType>
+        </TrafficFilter>
+        <DomainNameInformation>
+          <DomainName>internal.yourorganization.com</DomainName>
+          <DnsServers>192.168.1.1,192.168.1.2</DnsServers>
+          <AutoTrigger>true</AutoTrigger>
+        </DomainNameInformation>
+        <AlwaysOn>true</AlwaysOn>
+        <TrustedNetworkDetection>yourorganization.com</TrustedNetworkDetection>
+        <DeviceCompliance>
+          <Enabled>true</Enabled>
+          <Sso>
+            <Enabled>true</Enabled>
+            <Eku>YourEKU</Eku>
+            <IssuerHash>YourIssuerHash</IssuerHash>
+          </Sso>
+        </DeviceCompliance>
+      </VPNProfile>

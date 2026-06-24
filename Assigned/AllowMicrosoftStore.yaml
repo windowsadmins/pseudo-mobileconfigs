@@ -1,0 +1,17 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-applicationmanagement#allowstore
+
+displayName: "Allow Microsoft Store"
+identifier: "com.example.winadmins.AllowMicrosoftStore"
+description: "Allow Microsoft Store on Windows 11 Enterprise."
+version: 2025.03.25
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Allow Microsoft Store"
+    dataType: "Integer"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/ApplicationManagement/AllowStore"
+    value: "1"

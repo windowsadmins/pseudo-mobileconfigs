@@ -1,0 +1,18 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-start#hidetaskviewbutton
+
+displayName: "SharedDefaultBrowser"
+identifier: "com.example.winadmins.SharedDefaultBrowser"
+description: "Forces Google Chrome as the default browser by modifying the registry key or app association."
+version: 2025.03.25
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Set Google Chrome as Default Browser"
+    description: "Sets Google Chrome as the default browser by modifying the registry key."
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Custom/SetChromeAsDefault"
+    value: "<ChromeRegistryKey>"

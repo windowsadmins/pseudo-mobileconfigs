@@ -1,0 +1,20 @@
+# reference: "https://aka.ms/GetSecureBoot"
+# reference: "https://support.microsoft.com/topic/1c4cf9a3-8983-40c8-924f-44d9c959889d"
+
+displayName: "SecureBootCertUpdate"
+identifier: "com.example.winadmins.SecureBootCertUpdate"
+description: "Enables Secure Boot 2023 CA certificate deployment. Initiates the update from 2011 CAs (expiring June 2026) to 2023 CAs. Leaves high-confidence auto-update enabled (default)."
+category: System
+version: 2026.03.31
+platform: "windows10"
+roleScopeTagIds:
+  - 0
+
+settingsCatalog:
+  - kind: "choice"
+    definitionId: "device_vendor_msft_policy_config_secureboot_enablesecurebootcertificateupdates"
+    value: "device_vendor_msft_policy_config_secureboot_enablesecurebootcertificateupdates_22852"
+
+  - kind: "choice"
+    definitionId: "device_vendor_msft_policy_config_secureboot_configuremicrosoftupdatemanagedoptin"
+    value: "device_vendor_msft_policy_config_secureboot_configuremicrosoftupdatemanagedoptin_1"

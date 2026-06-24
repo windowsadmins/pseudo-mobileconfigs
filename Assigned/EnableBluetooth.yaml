@@ -1,0 +1,16 @@
+displayName: "EnableBluetooth"
+description: "Ensures Bluetooth is enabled for wireless peripherals and features."
+identifier: "com.example.winadmins.EnableBluetooth"
+version: "2025.02.14"
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Turn On Bluetooth"
+    description: "Enables Bluetooth on the device."
+    dataType: "String"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Bluetooth/BluetoothEnabled"
+    value: "true"

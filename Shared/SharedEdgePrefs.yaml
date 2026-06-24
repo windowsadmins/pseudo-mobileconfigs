@@ -1,0 +1,54 @@
+# Reference: https://learn.microsoft.com/en-us/deployedge/configure-edge-with-mdm
+
+displayName: "SharedEdgePrefs"
+description: "Sets prefernces for Microsoft Edge on Shared devices."
+identifier: "com.example.winadmins.SharedEdgePrefs"
+version: 2025.02.06
+
+applicability:
+  osEditions:
+   - "Windows 11 Enterpirse"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Enable Edge InPrivate"
+    description: "Turns on Edge InPrivate"
+    dataType: Boolean
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/MicrosoftEdge~Policy~microsoft_edge/AllowInPrivateMode"
+    value: true
+
+  - name: "Enable Tracking Prevention"
+    description: "Set Microsoft Edge Tracking Prevention to Balanced"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Edge~Policy~microsoftedge~Privacy/TrackingPrevention"
+    value: "1"
+
+  - name: "Enable Do Not Track"
+    description: "Enable Do Not Track in Microsoft Edge"
+    dataType: Boolean
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Edge~Policy~microsoftedge~Privacy/DoNotTrack"
+    value: true
+
+  - name: "Enable SmartScreen Defender"
+    description: "Enable SmartScreen Defender in Microsoft Edge"
+    dataType: Boolean
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Edge~Policy~microsoftedge~Security/SmartScreenEnabled"
+    value: true
+
+  - name: "Disable ActiveX"
+    description: "Disable ActiveX controls"
+    dataType: Boolean
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/InternetExplorer/DisableActiveX"
+    value: true
+
+  - name: "Enable Enhance your security on the web"
+    description: "Enable Enhance your security on the web in Microsoft Edge"
+    dataType: Boolean
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Edge~Policy~microsoftedge~Security/EnhancedSecurityEnabled"
+    value: true
+
+  - name: "Enable Homepage"
+    description: "Enable Homepage"
+    dataType: String
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Edge~Policy~MicrosoftEdge/HomepageLocation"
+    value: https://intranet.example.com/bookmarks/StudentBookmarks.html

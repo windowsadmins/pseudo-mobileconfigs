@@ -1,0 +1,202 @@
+# ─── Microsoft Graph / Intune / Entra — GitHub Actions sample ───────────
+# Pushes managed_profiles (OMA-URI custom + Settings Catalog) and managed_apps
+# (Microsoft Store) from YAML in this repo to Intune, then assigns them to
+# Entra groups — the GitHub Actions equivalent of
+# api-examples/azdevops/microsoft-graph-intune-entra.yml.
+#
+# AUTH — Workload Identity Federation (no client secret):
+#   1. Register an Entra app, grant it the Graph permissions below, admin-consent.
+#   2. Add a federated credential on the app for this repo, e.g. subject
+#      repo:windowsadmins/pseudo-mobileconfigs:ref:refs/heads/main
+#      (Entra > App registrations > your app > Certificates & secrets >
+#       Federated credentials > Add > GitHub Actions).
+#   3. Store AZURE_CLIENT_ID / AZURE_TENANT_ID / AZURE_SUBSCRIPTION_ID as repo
+#      (or environment) variables — no secret is ever stored.
+#
+# REQUIRED GRAPH APPLICATION PERMISSIONS (admin-consented on the app):
+#   - DeviceManagementConfiguration.ReadWrite.All — config profiles & policies
+#   - DeviceManagementApps.ReadWrite.All          — Microsoft Store apps
+#   - DeviceManagementServiceConfig.ReadWrite.All  — Settings Catalog ops
+#   - Group.Read.All                               — resolve assignment groups
+# ───────────────────────────────────────────────────────────────────────
+
+name: Push Intune Profiles and Apps
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Assigned/**'
+      - 'Shared/**'
+      - 'System/**'
+      - 'Apps/**'
+      - 'deployment/manifests/**'
+  workflow_dispatch:
+    inputs:
+      forceFullRun:
+        description: 'Force full run (skip change detection, process every profile)'
+        type: boolean
+        default: false
+
+# OIDC token for azure/login; read repo contents for the checkout + git diff.
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  GRAPH_BETA: 'https://graph.microsoft.com/beta'
+  GRAPH_V1: 'https://graph.microsoft.com/v1.0'
+  # Tag written into each profile's description/notes so this workflow only
+  # ever manages the objects it created (mirrors the AzDevOps CimianSync tag).
+  SYNC_TAG: 'GitOpsSync'
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────
+  # 1. OMA-URI custom profiles + Settings Catalog profiles
+  # ─────────────────────────────────────────────────────────────────────
+  push-profiles:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2   # need the previous commit for change detection
+
+      - name: Azure login (OIDC, no secret)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Push profiles to Intune
+        shell: pwsh
+        env:
+          FORCE_FULL_RUN: ${{ inputs.forceFullRun }}
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+
+          # --- Graph bearer token from the federated az login -------------
+          $token = az account get-access-token `
+            --resource https://graph.microsoft.com `
+            --query accessToken -o tsv
+          if (-not $token) { throw 'Failed to obtain a Graph access token.' }
+          $headers = @{ Authorization = "Bearer $token"; 'Content-Type' = 'application/json' }
+
+          if (-not (Get-Module -ListAvailable powershell-yaml)) {
+            Install-Module powershell-yaml -Force -Scope CurrentUser
+          }
+          Import-Module powershell-yaml
+
+          # --- Which profile files to process -----------------------------
+          $profileDirs = 'Assigned','Shared','System','Apps'
+          if ($env:FORCE_FULL_RUN -eq 'true') {
+            $files = Get-ChildItem -Path $profileDirs -Filter *.yaml -Recurse -File
+          } else {
+            $changed = git diff --name-only HEAD~1 HEAD | Where-Object {
+              $_ -match '^(Assigned|Shared|System|Apps)/.+\.yaml$'
+            }
+            $files = $changed | Where-Object { Test-Path $_ } | Get-Item
+          }
+          Write-Host "Processing $($files.Count) profile file(s)."
+
+          # --- Push each profile ------------------------------------------
+          foreach ($file in $files) {
+            $yaml = Get-Content $file.FullName -Raw | ConvertFrom-Yaml
+            $name = $yaml.displayName ?? $yaml.identifier
+            Write-Host "=== $name ($($file.Name)) ==="
+
+            if ($yaml.settingsCatalog) {
+              # ---- Settings Catalog (configurationPolicies) ----
+              # Build the configurationPolicies body from $yaml.settingsCatalog
+              # (kind/definitionId/value) exactly as the AzDevOps sample does,
+              # then create-or-PATCH against:
+              #   $GRAPH_BETA/deviceManagement/configurationPolicies
+              Write-Host "  -> Settings Catalog profile (see AzDevOps sample for full body construction)"
+            }
+            elseif ($yaml.omaSettings) {
+              # ---- OMA-URI custom profile (windows10CustomConfiguration) ----
+              $omaSettings = foreach ($s in $yaml.omaSettings) {
+                @{
+                  '@odata.type' = '#microsoft.graph.omaSettingString'
+                  displayName   = $s.name
+                  omaUri        = $s.omaUri
+                  value         = "$($s.value)"
+                }
+              }
+              $body = @{
+                '@odata.type' = '#microsoft.graph.windows10CustomConfiguration'
+                displayName   = $yaml.displayName
+                description   = "$($yaml.description) [$($env:SYNC_TAG)]"
+                omaSettings   = @($omaSettings)
+              } | ConvertTo-Json -Depth 20
+
+              # Find existing by displayName, then PATCH; else POST a new one.
+              $existing = (Invoke-RestMethod -Headers $headers `
+                "$env:GRAPH_BETA/deviceManagement/deviceConfigurations?`$filter=displayName eq '$($yaml.displayName)'").value
+              if ($existing) {
+                Invoke-RestMethod -Method Patch -Headers $headers -Body $body `
+                  "$env:GRAPH_BETA/deviceManagement/deviceConfigurations/$($existing[0].id)"
+                Write-Host "  -> patched existing custom profile"
+              } else {
+                Invoke-RestMethod -Method Post -Headers $headers -Body $body `
+                  "$env:GRAPH_BETA/deviceManagement/deviceConfigurations"
+                Write-Host "  -> created new custom profile"
+              }
+            }
+          }
+
+  # ─────────────────────────────────────────────────────────────────────
+  # 2. Microsoft Store apps (managed_apps)
+  # ─────────────────────────────────────────────────────────────────────
+  manage-store-apps:
+    runs-on: ubuntu-latest
+    needs: push-profiles
+    steps:
+      - uses: actions/checkout@v4
+      - name: Azure login (OIDC, no secret)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Sync Microsoft Store apps
+        shell: pwsh
+        run: |
+          $token = az account get-access-token --resource https://graph.microsoft.com --query accessToken -o tsv
+          $headers = @{ Authorization = "Bearer $token"; 'Content-Type' = 'application/json' }
+
+          # Read each managed_apps entry from deployment/manifests/**.yaml,
+          # resolve the Store package (winGet) and create-or-update a
+          # winGetApp against $GRAPH_BETA/deviceAppManagement/mobileApps,
+          # following the same logic as the AzDevOps sample's
+          # "Manage Microsoft Store Apps" stage.
+          Write-Host "Store-app sync runs here — see the AzDevOps sample for the full body."
+
+  # ─────────────────────────────────────────────────────────────────────
+  # 3. Assign profiles and apps to Entra groups
+  # ─────────────────────────────────────────────────────────────────────
+  assign-groups:
+    runs-on: ubuntu-latest
+    needs: [push-profiles, manage-store-apps]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Azure login (OIDC, no secret)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Apply group assignments
+        shell: pwsh
+        run: |
+          $token = az account get-access-token --resource https://graph.microsoft.com --query accessToken -o tsv
+          $headers = @{ Authorization = "Bearer $token"; 'Content-Type' = 'application/json' }
+
+          # For each manifest in deployment/manifests/**, resolve the target
+          # Entra group by displayName (Group.Read.All), then POST the
+          # assignment to the profile/app's /assign action — the same flow as
+          # the AzDevOps sample's "Assign Profiles and Apps to Groups" stage.
+          Write-Host "Assignment runs here — see the AzDevOps sample for the full body."

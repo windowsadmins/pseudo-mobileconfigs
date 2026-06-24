@@ -1,0 +1,23 @@
+# Reference: https://learn.microsoft.com/en-us/graph/api/resources/intune-softwareupdate-windowsqualityupdatepolicy
+#
+# Hotpatch policy for Assigned (1:1) endpoints. Eligible devices (Win11
+# Enterprise 24H2+ on AMD64, VBS enabled, current on baselining CU) receive
+# monthly security updates WITHOUT a reboot for Jan/Feb/Apr/May/Jul/Aug/Oct/Nov.
+# Mar/Jun/Sep/Dec remain standard cumulative updates and reboot per the ring.
+#
+# Not applied to Shared — those devices reboot daily anyway so the no-reboot
+# benefit is wasted there.
+
+displayName: "AssignedWindowsUpdateHotpatch"
+description: "Enables monthly no-reboot hotpatch CUs on hotpatch-eligible Assigned devices."
+identifier: "com.example.winadmins.AssignedWindowsUpdateHotpatch"
+version: 2026.05.15
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "24H2"
+
+windowsUpdate:
+  type: hotpatchPolicy
+  hotpatchEnabled: true

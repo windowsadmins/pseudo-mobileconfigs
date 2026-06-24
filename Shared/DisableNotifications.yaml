@@ -1,0 +1,87 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-notifications
+
+displayName: "DisableNotifications"
+identifier: "com.example.winadmins.DisableNotifications"
+description: "Disable notifications and system tray items on shared curriculum devices"
+category: System
+version: 2025.05.25
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+
+omaSettings:
+ - name: "Clear Tiles on Exit"
+   dataType: "Integer"
+   omaUri: "./User/Vendor/MSFT/Policy/Config/Start/StartMenu/ClearTilesOnExit"
+   value: "1"
+
+ - name: "Enable Legacy Balloon Notifications"
+   dataType: "Integer"
+   omaUri: "./User/Vendor/MSFT/Policy/Config/Taskbar/EnableLegacyBalloonNotifications"
+   value: "1"
+
+ - name: "No Tray Items Display"
+   dataType: "Integer"
+   omaUri: "./User/Vendor/MSFT/Policy/Config/Start/StartMenu/NoTrayItemsDisplay"
+   value: "1"
+
+ - name: "No Calls During Quiet Hours"
+   dataType: "Integer"
+   omaUri: "./User/Vendor/MSFT/Policy/Config/Notifications/NoCallsDuringQuietHours"
+   value: "1"
+
+ - name: "No Quiet Hours"
+   dataType: "Integer"
+   omaUri: "./User/Vendor/MSFT/Policy/Config/Notifications/NoQuietHours"
+   value: "1"
+
+ - name: "No Toast Notification"
+   dataType: "Integer"
+   omaUri: "./User/Vendor/MSFT/Policy/Config/Notifications/NoToastNotification"
+   value: "1"
+
+ - name: "No Lock Screen Toast Notification"
+   dataType: "Integer"
+   omaUri: "./User/Vendor/MSFT/Policy/Config/Notifications/NoLockScreenToastNotification"
+   value: "1"
+ - name: "Disable Notification Center"
+   dataType: "Integer"
+   omaUri: "./User/Vendor/MSFT/Policy/Config/Taskbar/DisableNotificationCenter"
+   value: "1"
+
+ - name: "Taskbar No Notification"
+   dataType: "Integer"
+   omaUri: "./User/Vendor/MSFT/Policy/Config/Taskbar/TaskbarNoNotification"
+   value: "1"
+
+ - name: "No System Tray System Promotion"
+   dataType: "Integer"
+   omaUri: "./User/Vendor/MSFT/Policy/Config/Taskbar/NoSysTraySystemPromotion"
+   value: "1"
+
+ - name: "No Balloon Feature Advertisements"
+   dataType: "Integer"
+   omaUri: "./User/Vendor/MSFT/Policy/Config/Taskbar/NoBalloonFeatureAdvertisements"
+   value: "1"
+
+ - name: "No Auto Tray Notify"
+   dataType: "Integer"
+   omaUri: "./User/Vendor/MSFT/Policy/Config/Start/StartMenu/NoAutoTrayNotify"
+   value: "1"
+ - name: "Allow Cloud Notifications"
+   dataType: "Integer"
+   omaUri: "./Device/Vendor/MSFT/Policy/Config/Notifications/DisallowCloudNotification"
+   value: "0"
+
+ - name: "Allow Notification Mirroring"
+   dataType: "Integer"
+   omaUri: "./User/Vendor/MSFT/Policy/Config/Notifications/DisallowNotificationMirroring"
+   value: "0"
+
+ - name: "Allow Tile Notification"
+   dataType: "Integer"
+   omaUri: "./User/Vendor/MSFT/Policy/Config/Notifications/DisallowTileNotification"
+   value: "0"

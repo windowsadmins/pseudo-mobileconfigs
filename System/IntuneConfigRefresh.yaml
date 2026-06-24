@@ -1,0 +1,24 @@
+# Reference: https://learn.microsoft.com/en-us/windows/client-management/mdm/dmclient-csp#deviceproviderprovideridconfigrefresh
+
+displayName: "IntuneConfigRefresh"
+description: "Sets Intune refresh for devices to 60 minutes."
+identifier: "com.example.winadmins.EnableIntuneConfigRefresh"
+version: 2025.02.11
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Enable Intune Config Refresh"
+    description: "Turns on Intune Config Refresh"
+    dataType: Boolean
+    omaUri: "./Device/Vendor/MSFT/DMClient/Provider/MS DM Server/ConfigRefresh/Enabled"
+    value: true
+
+  - name: "Set Cadence"
+    description: "Set Cadence"
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/DMClient/Provider/MS DM Server/ConfigRefresh/Cadence"
+    value: "60"

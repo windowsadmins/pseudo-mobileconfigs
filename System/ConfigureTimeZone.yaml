@@ -1,0 +1,17 @@
+displayName: "ConfigureTimeZone"
+identifier: "com.example.winadmins.ConfigureTimeZone"
+description: "Configures PST Time Zone"
+category: System
+version: 2025.06.10
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Set Time Zone to Pacific Standard Time"
+    description: "Configures the device to set Pacific Standard Time"
+    dataType: String
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/TimeLanguageSettings/ConfigureTimeZone"
+    value: "Pacific Standard Time"

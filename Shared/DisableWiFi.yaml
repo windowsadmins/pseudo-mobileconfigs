@@ -1,0 +1,17 @@
+displayName: "DisableWiFi"
+identifier: "com.example.winadmins.DisableWiFi"
+description: "Disable Windows WiFi"
+category: System
+version: 2025.05.09
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+  - name: "Disable Windows WiFi"
+    dataType: "Integer"
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/WiFi/AllowWiFi"
+    value: "0"
+ 

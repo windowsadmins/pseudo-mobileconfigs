@@ -1,0 +1,32 @@
+displayName: "SharedGlobalPrefs"
+description: "Global Settings for All Shared Devices"
+identifier: "com.example.winadmins.SharedGlobalPrefs"
+version: "2025.02.18"
+
+applicability:
+  osEditions:
+    - "Windows 11 Enterprise"
+  minVersion: "21H2"
+
+omaSettings:
+
+
+
+  - name: "Optimize Disk Cleanup"
+    description: "Schedules regular disk cleanup to remove temporary files and free up space."
+    dataType: String
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/Custom/DiskCleanupScheduled"
+    value:
+      enabled: true
+
+  - name: "Set User Profile Size Limit"
+    description: "Limits the size of user profiles to prevent excessive data accumulation on shared PCs."
+    dataType: Integer
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/UserProfile/ProfileSizeLimit"
+    value: "460800"  # Profile size in MB
+
+  - name: "Enable Location Service for Apps Requiring It"
+    description: "Enables Location Service for Applications that require location data, while remaining off by default."
+    dataType: String
+    omaUri: "./Device/Vendor/MSFT/Policy/Config/LocationService/LocationServiceEnabled"
+    value: "<Disabled/>"
